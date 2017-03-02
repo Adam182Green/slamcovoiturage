@@ -1,3 +1,7 @@
+gsb_covoit:
+    resource: "@GSBCovoitBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
