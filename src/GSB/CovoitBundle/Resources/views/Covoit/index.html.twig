@@ -6,7 +6,7 @@
 
 {% block gsbcovoit_body %}
 
-  <h2 class="text-center">Derniers trajets :</h2>
+  <h2>Derniers trajets :</h2>
 
   {% for annonce in listAnnonces %}
   <div class="panel panel-info">
@@ -19,10 +19,13 @@
       <h4>{{ annonce.ville }} - GSB : <i>{{ annonce.date_trajet|date('d-m-Y') }} à {{ annonce.date_trajet|date('h:m:s') }}</i></h4>
     </div>
     {% endif %}
-    <div class="pannel-body">
-      <p>Type de véhicule utilisé {{ annonce.type_vehicule }}</p>
-      <p>Par {{ annonce.auteur }} :</p>
+    <div class="panel-body">
+      <p>Type de véhicule utilisé : {{ annonce.type_vehicule }}</p>
+      <p>Le conducteur {{ annonce.auteur }} précise :</p>
       <i><p>{{ annonce.commentaire }}</p></i>
+      <a href="#" class="btn btn-primary">
+          Réserver <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
     </div>
   </div>
   {% endfor %}
