@@ -1,0 +1,13 @@
+body {
+  background-image: url("../images/background.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+div {
+  background-color: #F4F4F4;
+}
+
+#header {
+  background-color: #cccccc;
+}

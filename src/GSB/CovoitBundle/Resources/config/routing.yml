@@ -1,0 +1,3 @@
+gsb_covoit_homepage:
+    path:     /
+    defaults: { _controller: GSBCovoitBundle:Covoit:index }

@@ -1,0 +1,34 @@
+{% extends "GSBCovoitBundle::layout.html.twig" %}
+
+{% block title %}
+  Accueil - {{ parent() }}
+{% endblock %}
+
+{% block gsbcovoit_body %}
+
+  <h2>Derniers trajets :</h2>
+
+  {% for trajet in listTrajets %}
+
+  <div class="panel panel-info">
+    {% if trajet.getAllerOuRetour() == TRUE %}
+    <div class="panel-heading">
+      <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+    </div>
+    {% else %}
+    <div class="panel-heading">
+      <h4>{{ trajet.getIdVille().getLibelle() }} - GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+    </div>
+    {% endif %}
+    <div class="panel-body">
+      <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
+      <p>Le conducteur {{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }} précise :</p>
+      <i><p>{{ trajet.getCommentaire() }}</p></i>
+      <a href="#" class="btn btn-primary">
+          Réserver <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+    </div>
+  </div>
+  {% endfor %}
+
+{% endblock %}

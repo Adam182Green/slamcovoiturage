@@ -1,0 +1,14 @@
+
+{# Ce template n'hérite de personne, tout comme le template inclus avec {{ include() }}. #}
+
+<ul class="nav nav-pills nav-stacked">
+  {% for trajet in listTrajets %}
+    {% if loop.index <= limite %}
+    <li>
+      <a href="#">
+        {{ trajet.getIdVille.getLibelle() }}
+      </a>
+    </li>
+    {% endif %}
+  {% endfor %}
+</ul>
