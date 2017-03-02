@@ -1,0 +1,14 @@
+
+{# Ce template n'hérite de personne, tout comme le template inclus avec {{ include() }}. #}
+
+<ul class="nav nav-pills nav-stacked">
+  {% for trajet in listTrajets %}
+    {% if loop.index <= limite %}
+    <li>
+      <a href="#">
+        {{ trajet.getIdVille.getLibelle() }} - {{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}
+      </a>
+    </li>
+    {% endif %}
+  {% endfor %}
+</ul>

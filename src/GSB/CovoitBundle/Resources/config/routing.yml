@@ -1,0 +1,10 @@
+gsb_covoit_homepage:
+    path:     /
+    defaults: { _controller: GSBCovoitBundle:Covoit:index }
+
+gsb_covoit_afficher:
+    path:     /afficher/{id}
+    defaults:
+      _controller: GSBCovoitBundle:Covoit:afficher
+    requirements:
+      id: \d+
