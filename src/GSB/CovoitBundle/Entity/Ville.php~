@@ -5,12 +5,12 @@ namespace GSB\CovoitBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TypeVehicule
+ * Ville
  *
- * @ORM\Table(name="type_vehicule")
- * @ORM\Entity(repositoryClass="GSB\CovoitBundle\Repository\TypeVehiculeRepository")
+ * @ORM\Table(name="ville")
+ * @ORM\Entity(repositoryClass="GSB\CovoitBundle\Repository\VilleRepository")
  */
-class TypeVehicule
+class Ville
 {
     /**
      * @var int
@@ -31,9 +31,9 @@ class TypeVehicule
     /**
      * @var int
      *
-     * @ORM\Column(name="nb_places", type="integer")
+     * @ORM\Column(name="code_postal", type="integer")
      */
-    private $nbPlaces;
+    private $codePostal;
 
 
     /**
@@ -51,7 +51,7 @@ class TypeVehicule
      *
      * @param string $libelle
      *
-     * @return TypeVehicule
+     * @return Ville
      */
     public function setLibelle($libelle)
     {
@@ -71,26 +71,27 @@ class TypeVehicule
     }
 
     /**
-     * Set nbPlaces
+     * Set codePostal
      *
-     * @param integer $nbPlaces
+     * @param integer $codePostal
      *
-     * @return TypeVehicule
+     * @return Ville
      */
-    public function setNbPlaces($nbPlaces)
+    public function setCodePostal($codePostal)
     {
-        $this->nbPlaces = $nbPlaces;
+        $this->codePostal = $codePostal;
 
         return $this;
     }
 
     /**
-     * Get nbPlaces
+     * Get codePostal
      *
      * @return int
      */
-    public function getNbPlaces()
+    public function getCodePostal()
     {
-        return $this->nbPlaces;
+        return $this->codePostal;
     }
 }
+

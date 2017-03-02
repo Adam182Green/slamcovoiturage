@@ -8,21 +8,22 @@
 
   <h2>Derniers trajets :</h2>
 
-  {% for annonce in listAnnonces %}
+  {% for trajet in listTrajets %}
+
   <div class="panel panel-info">
-    {% if annonce.aller_ou_retour == TRUE %}
+    {% if trajet.getAllerOuRetour() == TRUE %}
     <div class="panel-heading">
-      <h4>GSB - {{ annonce.ville }} : <i>{{ annonce.date_trajet|date('d-m-Y') }} à {{ annonce.date_trajet|date('h:m:s') }}</i></h4>
+      <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
     </div>
     {% else %}
     <div class="panel-heading">
-      <h4>{{ annonce.ville }} - GSB : <i>{{ annonce.date_trajet|date('d-m-Y') }} à {{ annonce.date_trajet|date('h:m:s') }}</i></h4>
+      <h4>{{ trajet.getIdVille().getLibelle() }} - GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
     </div>
     {% endif %}
     <div class="panel-body">
-      <p>Type de véhicule utilisé : {{ annonce.type_vehicule }}</p>
-      <p>Le conducteur {{ annonce.auteur }} précise :</p>
-      <i><p>{{ annonce.commentaire }}</p></i>
+      <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
+      <p>Le conducteur {{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }} précise :</p>
+      <i><p>{{ trajet.getCommentaire() }}</p></i>
       <a href="#" class="btn btn-primary">
           Réserver <i class="glyphicon glyphicon-chevron-right"></i>
         </a>

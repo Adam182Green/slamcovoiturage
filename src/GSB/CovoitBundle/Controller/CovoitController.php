@@ -2,6 +2,11 @@
 
 namespace GSB\CovoitBundle\Controller;
 
+use GSB\CovoitBundle\Entity\Demande;
+use GSB\CovoitBundle\Entity\Salarie;
+use GSB\CovoitBundle\Entity\Trajet;
+use GSB\CovoitBundle\Entity\TypeVehicule;
+use GSB\CovoitBundle\Entity\Ville;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -10,38 +15,29 @@ class CovoitController extends Controller
 {
     public function indexAction()
     {
-      // en attedant de récupérer en bdd
-      $listAnnonces = array(
-        array(
-        'id'      => 1,
-        'auteur'  => "Jean Tissipe",
-        'date_trajet'    => new \Datetime(),
-        'heure_trajet'   => new \Datetime(),
-        'ville'       => "Arpajon-sur-Cère",
-        'aller_ou_retour' => true,
-        'type_vehicule' => "4x4",
-        'commentaire'    => "Détour possible."),
-      array(
-        'id'      => 1,
-        'auteur'  => "Marc Assain",
-        'date_trajet'    => new \Datetime(),
-        'heure_trajet'   => new \Datetime(),
-        'ville'       => "Saint-Simon",
-        'aller_ou_retour' => false,
-        'type_vehicule' => "Berline",
-        'commentaire'    => "Je fais mon premier covoiturage"),
-      array(
-        'id'      => 1,
-        'auteur'  => "Abby Ciclette",
-        'date_trajet'    => new \Datetime(),
-        'heure_trajet'   => new \Datetime(),
-        'ville'       => "Giou-de-Mammou",
-        'aller_ou_retour' => true,
-        'type_vehicule' => "Vélo",
-        'commentaire'    => "Je part à l'heure !"
-      ));
+      // On récupère l'EntityManager
+      $em = $this->getDoctrine()->getManager();
+
+      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+      $listDemandes = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
 
       return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
-                              array('listAnnonces' => $listAnnonces));
+                              array('listTrajets' => $listTrajets,
+                                    'listDemandes'=> $listDemandes));
+    }
+
+    public function menuAction($limite)
+    {
+      if ($limite == NULL)
+        $limite = 3;
+
+      // On récupère l'EntityManager
+      $em = $this->getDoctrine()->getManager();
+
+      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+
+      return $this->render('GSBCovoitBundle:Covoit:menu.html.twig',
+                          array('listTrajets' => $listTrajets,
+                                'limite'      => $limite));
     }
 }

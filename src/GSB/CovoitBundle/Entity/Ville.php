@@ -94,4 +94,3 @@ class Ville
         return $this->codePostal;
     }
 }
-
