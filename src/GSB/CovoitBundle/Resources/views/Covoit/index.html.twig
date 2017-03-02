@@ -1,36 +1,30 @@
 {% extends "GSBCovoitBundle::layout.html.twig" %}
 
+{% block title %}
+  Accueil - {{ parent() }}
+{% endblock %}
+
 {% block gsbcovoit_body %}
 
-  <h2>Derniers trajets( A faire )</h2>
+  <h2 class="text-center">Derniers trajets :</h2>
 
-  <div class="well">
-  <p>Trajet 1</p>
+  {% for annonce in listAnnonces %}
+  <div class="panel panel-info">
+    {% if annonce.aller_ou_retour == TRUE %}
+    <div class="panel-heading">
+      <h4>GSB - {{ annonce.ville }} : <i>{{ annonce.date_trajet|date('d-m-Y') }} à {{ annonce.date_trajet|date('h:m:s') }}</i></h4>
+    </div>
+    {% else %}
+    <div class="panel-heading">
+      <h4>{{ annonce.ville }} - GSB : <i>{{ annonce.date_trajet|date('d-m-Y') }} à {{ annonce.date_trajet|date('h:m:s') }}</i></h4>
+    </div>
+    {% endif %}
+    <div class="pannel-body">
+      <p>Type de véhicule utilisé {{ annonce.type_vehicule }}</p>
+      <p>Par {{ annonce.auteur }} :</p>
+      <i><p>{{ annonce.commentaire }}</p></i>
+    </div>
   </div>
-  
-  <div class="well">
-  <p>Trajet 2</p>
-  </div>
-
-  <div class="well">
-  <p>Trajet 3</p>
-  </div>
-
-  <div class="well">
-  <p>Trajet 4</p>
-  </div>
-
-  <div class="well">
-  <p>Trajet 5</p>
-  </div>
-
-  <div class="well">
-  <p>Trajet 6</p>
-  </div>
-
-  <div class="well">
-  <p>Trajet 7</p>
-  </div>
-
+  {% endfor %}
 
 {% endblock %}
