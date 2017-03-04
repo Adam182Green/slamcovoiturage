@@ -13,7 +13,11 @@ gsb_covoit_login:
 gsb_covoit_mesReservations:
     path:   /mesReservations
     defaults: { _controller: GSBCovoitBundle:Covoit:mesReservations }
-
+    
+gsb_covoit_mes_trajets:
+    path:   /mes_trajets
+    defaults: {_controller: GSBCovoitBundle:Covoit:mes_trajets}
+    
 gsb_covoit_salarie:
     path:     /salarie/{id}
     defaults:
