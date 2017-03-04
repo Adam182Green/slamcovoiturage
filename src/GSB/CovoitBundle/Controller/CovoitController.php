@@ -23,7 +23,8 @@ class CovoitController extends Controller
 
       return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
                               array('listTrajets' => $listTrajets,
-                                    'listDemandes'=> $listDemandes));
+                                    'title' => 'Accueil',
+                                    'subtitle' => 'Accueil'));
     }
 
     public function trajetAction($id)
