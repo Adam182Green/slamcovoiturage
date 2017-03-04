@@ -1,0 +1,20 @@
+{# src/OC/PlatformBundle/Resources/views/layout.html.twig #}
+
+{% extends "::mainlayout.html.twig" %}
+
+{% block title %}
+   {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+  <i><h2 style="color: grey">"Rien de mieux que le Collègueturage !"</h2></i>
+
+  <hr>
+
+  {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
+  {% block gsbcovoit_body %}
+  {% endblock %}
+
+{% endblock %}
