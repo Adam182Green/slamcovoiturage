@@ -39,24 +39,8 @@ class LoginController extends Controller
             {
                 if($salarie->getEmail() == $login->getEmail() && $salarie->getMotDePasse() == $login->getMotDePasse())
                 {
-                    // 1 - ICI AJOUTER $salarie en session (voir si on peut ajouter direct l'objet "salarie", sinon :)
-                    //$session->set('id', '$login->getId()');
-                    //$session->set('nom', '$login->getNom()');
-                    //$session->set('prenom', '$login->getPrenom()');
-                    //...
-
-                    // 2 - Ajouter message flash :
-                    //$this->addFlash('success','Identification réussie !');
-
-                    // 3 - L'afficher sur la page vers laquelle on se redirige, ici homepage
-                    /* {% if app.session.flashBag.has('success') %}
-                            <div class="alert alert-success">
-                                {% for msg in app.session.flashBag.get('success') %}
-                                    {{ msg }}
-                                {% endfor %}
-                            </div>
-                        {% endif %}*/
-
+                    $session->set('currentUser', $salarie);
+                    $this->addFlash('success','Identification réussie ! Bienvenue '.$salarie->getNom());
                     return $this->redirectToRoute('gsb_covoit_homepage');
                 }
             }
