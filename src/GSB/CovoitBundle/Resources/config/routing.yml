@@ -8,3 +8,11 @@ gsb_covoit_afficher:
       _controller: GSBCovoitBundle:Covoit:afficher
     requirements:
       id: \d+
+      
+inscription:
+    path:   /inscription
+    defaults: {_controller: GSBCovoitBundle:Login:inscription}
+
+login:
+    path:   /login
+    defaults: {_controller: GSBCovoitBundle:Login:login }
