@@ -5,8 +5,8 @@
   {% for trajet in listTrajets %}
     {% if loop.index <= limite %}
     <li>
-      <a href="#">
-        {{ trajet.getIdVille.getLibelle() }} - {{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}
+      <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}">
+        {{ trajet.getIdVille.getLibelle() }}
       </a>
     </li>
     {% endif %}

@@ -10,7 +10,7 @@
 
   {% for trajet in listTrajets %}
 
-  <div class="panel panel-info">
+  <div class="panel panel-primary">
     {% if trajet.getAllerOuRetour() == TRUE %}
     <div class="panel-heading">
       <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
@@ -24,7 +24,7 @@
       <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
       <p>Le conducteur {{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }} précise :</p>
       <i><p>{{ trajet.getCommentaire() }}</p></i>
-      <a href="{{ path('gsb_covoit_afficher', {'id': trajet.id}) }}" class="btn btn-primary">
+      <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary">
           Réserver <i class="glyphicon glyphicon-chevron-right"></i>
         </a>
     </div>

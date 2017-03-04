@@ -26,18 +26,32 @@ class CovoitController extends Controller
                                     'listDemandes'=> $listDemandes));
     }
 
-    public function afficherAction($id)
+    public function trajetAction($id)
     {
       $em = $this->getDoctrine()->getManager();
 
       $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($id);
 
       if (null === $trajet) {
-        throw new NotFoundHttpException("Le trajet d'id ".$id. "n'existe pas.");
+        throw new NotFoundHttpException("Le trajet d'id ".$id." n'existe pas.");
       }
 
-      return $this->render('GSBCovoitBundle:Covoit:afficher.html.twig',
+      return $this->render('GSBCovoitBundle:Covoit:trajet.html.twig',
                           array('trajet'  => $trajet));
+    }
+
+    public function salarieAction($id)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $salarie = $em->getRepository('GSBCovoitBundle:Salarie')->find($id);
+
+      if (null === $salarie) {
+        throw new NotFoundHttpException("Le salarie d'id ".$id." n'existe pas.");
+      }
+
+      return $this->render('GSBCovoitBundle:Covoit:salarie.html.twig',
+                          array('salarie'  => $salarie));
     }
 
     public function menuAction($limite)
