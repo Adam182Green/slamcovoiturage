@@ -24,7 +24,11 @@
       <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
       <p>Le conducteur {{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }} précise :</p>
       <i><p>{{ trajet.getCommentaire() }}</p></i>
+<<<<<<< HEAD
       <a href="#" class="btn btn-primary">
+=======
+      <a href="{{ path('gsb_covoit_afficher', {'id': trajet.id}) }}" class="btn btn-primary">
+>>>>>>> refs/remotes/origin/master
           Réserver <i class="glyphicon glyphicon-chevron-right"></i>
         </a>
     </div>

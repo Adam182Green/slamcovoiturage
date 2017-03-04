@@ -6,7 +6,11 @@
     {% if loop.index <= limite %}
     <li>
       <a href="#">
+<<<<<<< HEAD
         {{ trajet.getIdVille.getLibelle() }}
+=======
+        {{ trajet.getIdVille.getLibelle() }} - {{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}
+>>>>>>> refs/remotes/origin/master
       </a>
     </li>
     {% endif %}

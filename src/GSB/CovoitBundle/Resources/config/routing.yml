@@ -1,3 +1,21 @@
 gsb_covoit_homepage:
     path:     /
     defaults: { _controller: GSBCovoitBundle:Covoit:index }
+<<<<<<< HEAD
+=======
+
+gsb_covoit_afficher:
+    path:     /afficher/{id}
+    defaults:
+      _controller: GSBCovoitBundle:Covoit:afficher
+    requirements:
+      id: \d+
+      
+inscription:
+    path:   /inscription
+    defaults: {_controller: GSBCovoitBundle:Login:inscription}
+
+login:
+    path:   /login
+    defaults: {_controller: GSBCovoitBundle:Login:login }
+>>>>>>> refs/remotes/origin/master

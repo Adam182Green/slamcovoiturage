@@ -26,6 +26,23 @@ class CovoitController extends Controller
                                     'listDemandes'=> $listDemandes));
     }
 
+<<<<<<< HEAD
+=======
+    public function afficherAction($id)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($id);
+
+      if (null === $trajet) {
+        throw new NotFoundHttpException("Le trajet d'id ".$id. "n'existe pas.");
+      }
+
+      return $this->render('GSBCovoitBundle:Covoit:afficher.html.twig',
+                          array('trajet'  => $trajet));
+    }
+
+>>>>>>> refs/remotes/origin/master
     public function menuAction($limite)
     {
       if ($limite == NULL)
