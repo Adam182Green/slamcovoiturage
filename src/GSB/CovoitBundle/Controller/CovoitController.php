@@ -19,6 +19,7 @@ class CovoitController extends Controller
       $session = $request->getSession();
       $curentUser = $session->get('currentUser');
       $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+      
       return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
                               array('listTrajets' => $listTrajets,
                                     'title' => 'Accueil',
@@ -34,7 +35,6 @@ class CovoitController extends Controller
       if (null === $trajet) {
         throw new NotFoundHttpException("Le trajet d'id ".$id." n'existe pas.");
       }
-
       return $this->render('GSBCovoitBundle:Covoit:trajet.html.twig',
                           array('trajet'  => $trajet,
                                 'currentUser' => $curentUser));
