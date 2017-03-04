@@ -73,17 +73,14 @@ class CovoitController extends Controller
       $em = $this->getDoctrine()->getManager();
       $session = $request->getSession();
       $curentUser = $session->get('currentUser');
-      $user_id = 1;
       $title = "Mes trajets";
       $subtitle = "Mes trajets";
-      $trajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+      $trajets = $em->getRepository('GSBCovoitBundle:Trajet')->findBy(array('auteurId' => $curentUser->getId()));
       $mes_trajets = array();
+
       foreach ($trajets as $trajet)
       {
-        if ($trajet->getAuteurId()->getId() == $user_id)
-        {
           $mes_trajets[] = $trajet;
-        }
       }
       if (NULL === $mes_trajets) {
         throw new NotFoundHttpException("Vous n'avez pas encore proposé de trajet.");
@@ -100,8 +97,9 @@ class CovoitController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $curentUser = $session->get('currentUser');
-        $demandes = $em->getRepository('GSBCovoitBundle:Demande')->findBy(array('salarieId' => 4)); // à remplacer
+        $demandes = $em->getRepository('GSBCovoitBundle:Demande')->findBy(array('salarieId' => $curentUser->getId()));
         $trajets = array();
+
         foreach($demandes as $demande)
         {
             $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneById($demande->getTrajetId());
