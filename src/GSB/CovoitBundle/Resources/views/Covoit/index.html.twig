@@ -1,12 +1,12 @@
 {% extends "GSBCovoitBundle::layout.html.twig" %}
 
 {% block title %}
-  Accueil - {{ parent() }}
+  {{ title }} - {{ parent() }}
 {% endblock %}
 
 {% block gsbcovoit_body %}
 
-  <h2>Derniers trajets :</h2>
+  <h2>{{ subtitle }}</h2>
 
   {% for trajet in listTrajets %}
 
