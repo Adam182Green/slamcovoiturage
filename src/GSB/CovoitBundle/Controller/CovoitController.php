@@ -69,6 +69,33 @@ class CovoitController extends Controller
                                 'limite'      => $limite));
     }
     
+    public function mes_trajetsAction()
+    {
+      $em = $this->getDoctrine()->getManager();
+      $user_id = 1;
+      $title = "Mes trajets";
+      $subtitle = "Mes trajets";
+      $trajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+      $mes_trajets = array();
+
+      foreach ($trajets as $trajet)
+      {
+        if ($trajet->getAuteurId()->getId() == $user_id)
+        {
+          $mes_trajets[] = $trajet;
+        }
+      }
+
+      if (NULL === $mes_trajets) {
+        throw new NotFoundHttpException("Vous n'avez pas encore proposé de trajet.");
+      }
+
+      return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
+                          array('listTrajets'  => $mes_trajets,
+                                'title' => $title,
+                                'subtitle' => $subtitle));
+    }
+    
     public function mesReservationsAction()
     {
         $em = $this->getDoctrine()->getManager();
