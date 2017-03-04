@@ -19,8 +19,7 @@ class CovoitController extends Controller
       $session = $request->getSession();
       $curentUser = $session->get('currentUser');
       $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
-
-
+      
       return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
                               array('listTrajets' => $listTrajets,
                                     'title' => 'Accueil',

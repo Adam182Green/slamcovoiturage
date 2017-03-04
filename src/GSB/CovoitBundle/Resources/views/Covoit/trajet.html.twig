@@ -6,24 +6,22 @@
 
 {% block gsbcovoit_body %}
   <div class="panel panel-primary">
-      {% if trajet.getAllerOuRetour() == TRUE %}
-      <div class="panel-heading">
+    <div class="panel-heading">
+      {% if trajet.getAllerOuRetour() %}
         <h3>GSB <i class="glyphicon glyphicon-arrow-right"></i> {{ trajet.getIdVille().getLibelle() }}</h3>
-      </div>
       {% else %}
-      <div class="panel-heading">
         <h3>{{ trajet.getIdVille().getLibelle() }} <i class="glyphicon glyphicon-arrow-right"></i> GSB</h3>
-      </div>
       {% endif %}
+    </div>
     <div class="panel-body">
       <div class="row">
         <div class="col-md-6">
           <ul class="list-group">
-            {% if trajet.getAllerOuRetour() == TRUE %}
+            {% if trajet.getAllerOuRetour() %}
               <li class="list-group-item"><h4>Point de départ : <b>GSB</b></h4></li>
-              <li class="list-group-item"><h4>Point d'arrivé : <b>{{ trajet.getIdVille.getLibelle()}}, {{ trajet.getIdVille.getCodePostal()}}</h4></li></b>
+              <li class="list-group-item"><h4>Point d'arrivé : <b>{{ trajet.getIdVille.getLibelle()}}, {{ trajet.getIdVille.getCodePostal()}}</b></h4></li>
             {% else %}
-            <li class="list-group-item"><h4>Point de départ : <b>{{ trajet.getIdVille.getLibelle()}}, {{ trajet.getIdVille.getCodePostal()}}</b>
+            <li class="list-group-item"><h4>Point de départ : <b>{{ trajet.getIdVille.getLibelle()}}, {{ trajet.getIdVille.getCodePostal()}}</b></h4></li>
             <li class="list-group-item"><h4>Point d'arrivé : <b>GSB</b></h4></li>
             {% endif %}
             <li class="list-group-item"><h4>Heure de départ : <b>{{ trajet.getHeureTrajet()|date ('H:i') }} h</b></h4></li>
@@ -56,5 +54,6 @@
       </div>
     </div>
   </div>
+</div>
 
 {% endblock %}

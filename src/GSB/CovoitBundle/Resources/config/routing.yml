@@ -2,32 +2,32 @@ gsb_covoit_homepage:
     path:     /
     defaults: { _controller: GSBCovoitBundle:Covoit:index }
 
-gsb_covoit_inscription:
-    path:   /inscription
-    defaults: {_controller: GSBCovoitBundle:Login:inscription}
-
-gsb_covoit_login:
-    path:   /login
-    defaults: {_controller: GSBCovoitBundle:Login:login }
-
-gsb_covoit_mesReservations:
-    path:   /mesReservations
-    defaults: { _controller: GSBCovoitBundle:Covoit:mesReservations }
-    
-gsb_covoit_mes_trajets:
-    path:   /mes_trajets
-    defaults: {_controller: GSBCovoitBundle:Covoit:mes_trajets}
-    
-gsb_covoit_salarie:
-    path:     /salarie/{id}
-    defaults:
-      _controller: GSBCovoitBundle:Covoit:salarie
-    requirements:
-      id: \d+
-      
 gsb_covoit_trajet:
     path:     /trajet/{id}
     defaults:
       _controller: GSBCovoitBundle:Covoit:trajet
     requirements:
       id: \d+
+
+gsb_covoit_salarie:
+    path:     /salarie/{id}
+    defaults:
+      _controller: GSBCovoitBundle:Covoit:salarie
+    requirements:
+      id: \d+
+
+gsb_covoit_inscription:
+    path:   /inscription
+    defaults: {_controller: GSBCovoitBundle:Login:inscription}
+
+gsb_covoit_login:
+    path:   /login
+    defaults: {_controller: GSBCovoitBundle:Login:login}
+
+gsb_covoit_mes_trajets:
+    path:   /mes_trajets
+    defaults: {_controller: GSBCovoitBundle:Covoit:mes_trajets}
+
+gsb_covoit_mesReservations:
+    path:   /mesReservations
+    defaults: { _controller: GSBCovoitBundle:Covoit:mesReservations }

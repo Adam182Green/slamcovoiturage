@@ -1,6 +1,11 @@
 {# src/OC/PlatformBundle/Resources/views/layout.html.twig #}
+{% if currentUser is defined %}
+  {% set chemin = "::mainlayout.html.twig" %}
+{% else %}
+  {% set chemin = "::offlinelayout.html.twig" %}
+{% endif %}
 
-{% extends "::mainlayout.html.twig" %}
+{% extends chemin %}
 
 {% block title %}
    {{ parent() }}

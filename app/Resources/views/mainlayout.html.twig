@@ -36,12 +36,13 @@
       {% block utilisateur %}
         <h2>{{ currentUser.getPrenom() }} {{ currentUser.getNom() }}</h2>
       {% endblock %}
+
         <ul class="nav nav-pills nav-stacked">
           <li><a href="#">Profil</a></li>
-          <li><a href="#">Mes réservations</a></li>
-          <li><a href="#">Mes trajets</a></li>
+          <li><a href="{{ path('gsb_covoit_mesReservations') }}">Mes réservations</a></li>
+          <li><a href="{{ path('gsb_covoit_mes_trajets') }}">Mes trajets</a></li>
           <li><a href="#">Historique</a></li>
-          <li><a href="#">Déconnexion</a></li>
+          <li><a href="{{ path('gsb_covoit_homepage') }}">Déconnexion</a></li>
         </ul>
 
         <h3>Annonces</h3>
