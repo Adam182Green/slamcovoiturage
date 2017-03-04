@@ -1,0 +1,38 @@
+{% extends "GSBCovoitBundle::layout.html.twig" %}
+
+{% block title %}
+  {{salarie.getPrenom() }} {{salarie.getNom() }} - {{ parent() }}
+{% endblock %}
+
+{% block gsbcovoit_body %}
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3><i class="glyphicon glyphicon-user"></i> {{ salarie.getPrenom() }} {{ salarie.getNom() }}</h3>
+    </div>
+    <div class="panel-body">
+      <table class="table">
+        <tr>
+          <td>Nom :</td>
+          <td><b>{{ salarie.getNom() }}</b></td>
+        </tr>
+        <tr>
+          <td>Prenom :</td>
+          <td><b>{{ salarie.getPrenom() }}</b></td>
+        </tr>
+        <tr>
+          <td>Email :</td>
+          <td><b>{{ salarie.getEmail() }}</b></td>
+        </tr>
+        <tr>
+          <td>Téléphone :</td>
+          <td><b>{{ salarie.getTelephone() }}</b></td>
+        </tr>
+      </table>
+    </div>
+    <div class="panel-footer">
+      <a href="{{ path('gsb_covoit_homepage') }}" class="btn btn-primary">
+          Retour à l'acceuil <i class="glyphicon glyphicon-chevron-right"></i>
+      </a>
+    </div>
+  </div>
+{% endblock %}

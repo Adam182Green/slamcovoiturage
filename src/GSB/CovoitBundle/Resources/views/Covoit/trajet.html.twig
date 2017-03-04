@@ -1,0 +1,60 @@
+{% extends "GSBCovoitBundle::layout.html.twig" %}
+
+{% block title %}
+  Lecture d'une annonce - {{ parent() }}
+{% endblock %}
+
+{% block gsbcovoit_body %}
+  <div class="panel panel-primary">
+      {% if trajet.getAllerOuRetour() == TRUE %}
+      <div class="panel-heading">
+        <h3>GSB <i class="glyphicon glyphicon-arrow-right"></i> {{ trajet.getIdVille().getLibelle() }}</h3>
+      </div>
+      {% else %}
+      <div class="panel-heading">
+        <h3>{{ trajet.getIdVille().getLibelle() }} <i class="glyphicon glyphicon-arrow-right"></i> GSB</h3>
+      </div>
+      {% endif %}
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6">
+          <ul class="list-group">
+            {% if trajet.getAllerOuRetour() == TRUE %}
+              <li class="list-group-item"><h4>Point de départ : <b>GSB</b></h4></li>
+              <li class="list-group-item"><h4>Point d'arrivé : <b>{{ trajet.getIdVille.getLibelle()}}, {{ trajet.getIdVille.getCodePostal()}}</h4></li></b>
+            {% else %}
+            <li class="list-group-item"><h4>Point de départ : <b>{{ trajet.getIdVille.getLibelle()}}, {{ trajet.getIdVille.getCodePostal()}}</b>
+            <li class="list-group-item"><h4>Point d'arrivé : <b>GSB</b></h4></li>
+            {% endif %}
+            <li class="list-group-item"><h4>Heure de départ : <b>{{ trajet.getHeureTrajet()|date ('H:i') }} h</b></h4></li>
+            <li class="list-group-item"><h4>Type de véhicule : <b>{{ trajet.getIdTypeVehicule().getLibelle() }}</b></h4></li>
+            <li class="list-group-item"><h4>Nombre de places totales : <b>{{ trajet.getIdTypeVehicule().getNbPlaces() }}</b></h4></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6">
+              <h4><i class="glyphicon glyphicon-user"></i>  {{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }} </h4>
+              <a href="{{ path('gsb_covoit_salarie', {'id' : trajet.getAuteurId().getId()}) }}" class="btn btn-primary">
+                  Informations <i class="glyphicon glyphicon-chevron-right"></i>
+              </a>
+            </div>
+            <div class="col-md-6">
+              <h4>Commentaire du conducteur :</h4>
+              <div class="well">
+                {{ trajet.getCommentaire() }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+            <a href="#" class="btn btn-primary btn-block" disabled="disabled">
+                <h4>Réserver <i class="glyphicon glyphicon-chevron-right"></i></h4>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

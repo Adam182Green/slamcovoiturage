@@ -1,21 +1,25 @@
 gsb_covoit_homepage:
-    path:     /
+    path:     /acceuil
     defaults: { _controller: GSBCovoitBundle:Covoit:index }
-<<<<<<< HEAD
-=======
 
-gsb_covoit_afficher:
-    path:     /afficher/{id}
+gsb_covoit_trajet:
+    path:     /trajet/{id}
     defaults:
-      _controller: GSBCovoitBundle:Covoit:afficher
+      _controller: GSBCovoitBundle:Covoit:trajet
     requirements:
       id: \d+
-      
-inscription:
+
+gsb_covoit_salarie:
+    path:     /salarie/{id}
+    defaults:
+      _controller: GSBCovoitBundle:Covoit:salarie
+    requirements:
+      id: \d+
+
+gsb_covoit_inscription:
     path:   /inscription
     defaults: {_controller: GSBCovoitBundle:Login:inscription}
 
-login:
+gsb_covoit_login:
     path:   /login
     defaults: {_controller: GSBCovoitBundle:Login:login }
->>>>>>> refs/remotes/origin/master

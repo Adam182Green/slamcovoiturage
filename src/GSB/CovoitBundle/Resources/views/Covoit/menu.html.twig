@@ -5,12 +5,8 @@
   {% for trajet in listTrajets %}
     {% if loop.index <= limite %}
     <li>
-      <a href="#">
-<<<<<<< HEAD
+      <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}">
         {{ trajet.getIdVille.getLibelle() }}
-=======
-        {{ trajet.getIdVille.getLibelle() }} - {{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}
->>>>>>> refs/remotes/origin/master
       </a>
     </li>
     {% endif %}

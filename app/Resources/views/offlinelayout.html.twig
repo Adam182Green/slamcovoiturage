@@ -25,10 +25,10 @@
       </p>
       <br/>
       <p>
-        <a class="btn btn-primary btn-lg" href="#">
+        <a class="btn btn-primary btn-lg" href="{{ path('gsb_covoit_inscription') }}">
           Inscription <i class="glyphicon glyphicon-chevron-right"></i>
         </a>
-        <a class="btn btn-primary btn-lg" href="#">
+        <a class="btn btn-primary btn-lg" href="{{ path('gsb_covoit_login') }}">
           Connection <i class="glyphicon glyphicon-chevron-right"></i>
         </a>
       </p>
@@ -38,12 +38,12 @@
       <div id="menu" class="col-md-3">
       <h3>Compte</h3>
         <ul class="nav nav-pills nav-stacked">
-          <li><a href="#">S'inscrire</a></li>
-          <li><a href="#">Se connecter</a></li>
+          <li><a href="{{ path('gsb_covoit_inscription') }}">S'inscrire</a></li>
+          <li><a href="{{ path('gsb_covoit_login') }}">Se connecter</a></li>
         </ul>
         <h3>Les annonces</h3>
         <ul class="nav nav-pills nav-stacked">
-          <li><a href="#">Accueil</a></li>
+          <li><a href="{{ path('gsb_covoit_homepage') }}">Accueil</a></li>
           <li><a href="#">Rechercher un trajet</a></li>
         </ul>
     </div>
