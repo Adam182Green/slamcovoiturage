@@ -1,5 +1,6 @@
 <?php
 namespace GSB\CovoitBundle\Controller;
+
 use GSB\CovoitBundle\Entity\Login;
 use GSB\CovoitBundle\Entity\Salarie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,6 +17,11 @@ class LoginController extends Controller
 {
     public function loginAction(Request $request)
     {
+        $session = $request->getSession();
+        if($session->get('currentUser') != null)
+        {
+          return $this->redirectToRoute('gsb_covoit_homepage');
+        }
         $em = $this->getDoctrine()->getManager();
         $login = new Login();
         $salaries = $em->getRepository('GSBCovoitBundle:Salarie')->findAll();
@@ -33,7 +39,7 @@ class LoginController extends Controller
                 if($salarie->getEmail() == $login->getEmail() && $salarie->getMotDePasse() == $login->getMotDePasse())
                 {
                   $msg = 'Identification réussie ! Bienvenue '.$salarie->getPrenom().' '.$salarie->getNom();
-                  return $this->setCurrentUser($request, $salarie, $msg);
+                  return $this->setCurrentUser($session, $salarie, $msg);
                 }
             }
         }
@@ -41,8 +47,14 @@ class LoginController extends Controller
             'form' => $form->createView(),
         ));
     }
+
     public function inscriptionAction(Request $request)
     {
+        $session = $request->getSession();
+        if($session->get('currentUser') != null)
+        {
+          return $this->redirectToRoute('gsb_covoit_homepage');
+        }
         $em = $this->getDoctrine()->getManager();
         $newSalarie = new Salarie();
         $salaries = $em->getRepository('GSBCovoitBundle:Salarie')->findAll();
@@ -70,7 +82,7 @@ class LoginController extends Controller
                 {
                     $em->persist($newSalarie);
                     $em->flush();
-                    return $this->setCurrentUser($request, $newSalarie, 'Félicitations, votre inscription est réussie !');
+                    return $this->setCurrentUser($session, $newSalarie, 'Félicitations, votre inscription est réussie !');
                     // 4 -[Si on a le temps] Envoyer un mail de confirmation d'inscription
                 }
             }
@@ -80,9 +92,15 @@ class LoginController extends Controller
         ));
     }
 
-    private function setCurrentUser($request, $salarie, $msg)
+    public function logoutAction(Request $request)
     {
       $session = $request->getSession();
+      $session->set('currentUser', null);
+      return $this->redirectToRoute('gsb_covoit_login');
+    }
+
+    private function setCurrentUser($session, $salarie, $msg)
+    {
       $session->set('currentUser', $salarie);
       $this->addFlash('success', $msg);
       return $this->redirectToRoute('gsb_covoit_homepage');
