@@ -14,12 +14,17 @@ class CovoitController extends Controller
 {
     public function indexAction(Request $request)
     {
-      // On récupère l'EntityManager
-      $em = $this->getDoctrine()->getManager();
       $session = $request->getSession();
       $curentUser = $session->get('currentUser');
+      if($curentUser == null)
+      {
+        return $this->redirectToRoute('gsb_covoit_login');
+      }
+      // On récupère l'EntityManager
+      $em = $this->getDoctrine()->getManager();
+
       $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
-      
+
       return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
                               array('listTrajets' => $listTrajets,
                                     'title' => 'Accueil',
@@ -28,9 +33,13 @@ class CovoitController extends Controller
     }
     public function trajetAction(Request $request, $id)
     {
-      $em = $this->getDoctrine()->getManager();
       $session = $request->getSession();
       $curentUser = $session->get('currentUser');
+      if($curentUser == null)
+      {
+        return $this->redirectToRoute('gsb_covoit_login');
+      }
+      $em = $this->getDoctrine()->getManager();
       $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($id);
       if (null === $trajet) {
         throw new NotFoundHttpException("Le trajet d'id ".$id." n'existe pas.");
@@ -41,9 +50,13 @@ class CovoitController extends Controller
     }
     public function salarieAction(Request $request, $id)
     {
-      $em = $this->getDoctrine()->getManager();
       $session = $request->getSession();
       $curentUser = $session->get('currentUser');
+      if($curentUser == null)
+      {
+        return $this->redirectToRoute('gsb_covoit_login');
+      }
+      $em = $this->getDoctrine()->getManager();
       $salarie = $em->getRepository('GSBCovoitBundle:Salarie')->find($id);
       if (null === $salarie) {
         throw new NotFoundHttpException("Le salarie d'id ".$id." n'existe pas.");
@@ -54,12 +67,16 @@ class CovoitController extends Controller
     }
     public function menuAction(Request $request, $limite)
     {
+      $session = $request->getSession();
+      $curentUser = $session->get('currentUser');
+      if($curentUser == null)
+      {
+        return $this->redirectToRoute('gsb_covoit_login');
+      }
       if ($limite == NULL)
         $limite = 3;
       // On récupère l'EntityManager
       $em = $this->getDoctrine()->getManager();
-      $session = $request->getSession();
-      $curentUser = $session->get('currentUser');
       $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
       return $this->render('GSBCovoitBundle:Covoit:menu.html.twig',
                           array('listTrajets' => $listTrajets,
@@ -69,9 +86,14 @@ class CovoitController extends Controller
 
     public function mes_trajetsAction(Request $request)
     {
-      $em = $this->getDoctrine()->getManager();
+
       $session = $request->getSession();
       $curentUser = $session->get('currentUser');
+      if($curentUser == null)
+      {
+        return $this->redirectToRoute('gsb_covoit_login');
+      }
+      $em = $this->getDoctrine()->getManager();
       $title = "Mes trajets";
       $subtitle = "Mes trajets";
       $trajets = $em->getRepository('GSBCovoitBundle:Trajet')->findBy(array('auteurId' => $curentUser->getId()));
@@ -93,9 +115,13 @@ class CovoitController extends Controller
 
     public function mesReservationsAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $curentUser = $session->get('currentUser');
+        if($curentUser == null)
+        {
+          return $this->redirectToRoute('gsb_covoit_login');
+        }
+        $em = $this->getDoctrine()->getManager();
         $demandes = $em->getRepository('GSBCovoitBundle:Demande')->findBy(array('salarieId' => $curentUser->getId()));
         $trajets = array();
 
