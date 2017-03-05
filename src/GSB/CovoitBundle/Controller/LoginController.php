@@ -19,7 +19,7 @@ class LoginController extends Controller
         $em = $this->getDoctrine()->getManager();
         $login = new Login();
         $salaries = $em->getRepository('GSBCovoitBundle:Salarie')->findAll();
-        $session = $request->getSession();
+
         $form = $this->createFormBuilder($login)
             ->add('email', EmailType::class)
             ->add('motDePasse', PasswordType::class)
@@ -32,11 +32,8 @@ class LoginController extends Controller
             {
                 if($salarie->getEmail() == $login->getEmail() && $salarie->getMotDePasse() == $login->getMotDePasse())
                 {
-                    $session->set('currentUser', $salarie);
-                  
-                    $this->addFlash('success','Identification réussie ! Bienvenue '.$salarie->getPrenom().' '.$salarie->getNom());
-                  
-                    return $this->redirectToRoute('gsb_covoit_homepage');
+                  $msg = 'Identification réussie ! Bienvenue '.$salarie->getPrenom().' '.$salarie->getNom();
+                  return $this->setCurrentUser($request, $salarie, $msg);
                 }
             }
         }
@@ -73,17 +70,21 @@ class LoginController extends Controller
                 {
                     $em->persist($newSalarie);
                     $em->flush();
-                    // 1 - Idem, enregistrer les infos du $newSalarie en session
-                    // 2 - Ajouter message flash :
-                    //$this->addFlash('success','Félicitation, votre inscription est réussie !');
-                    // 3 - L'afficher sur la page vers laquelle on se redirige
+                    return $this->setCurrentUser($request, $newSalarie, 'Félicitations, votre inscription est réussie !');
                     // 4 -[Si on a le temps] Envoyer un mail de confirmation d'inscription
-                    return $this->redirectToRoute('gsb_covoit_homepage');
                 }
             }
         }
         return $this->render('GSBCovoitBundle:Covoit:login.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    private function setCurrentUser($request, $salarie, $msg)
+    {
+      $session = $request->getSession();
+      $session->set('currentUser', $salarie);
+      $this->addFlash('success', $msg);
+      return $this->redirectToRoute('gsb_covoit_homepage');
     }
 }
