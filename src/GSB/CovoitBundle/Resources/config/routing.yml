@@ -28,6 +28,10 @@ gsb_covoit_logout:
     path:   /logout
     defaults: {_controller: GSBCovoitBundle:Login:logout}
 
+gsb_covoit_logout:
+    path:   /logout
+    defaults: {_controller: GSBCovoitBundle:Login:logout}
+
 gsb_covoit_mes_trajets:
     path:   /mes_trajets
     defaults: {_controller: GSBCovoitBundle:Covoit:mes_trajets}
@@ -35,3 +39,11 @@ gsb_covoit_mes_trajets:
 gsb_covoit_mesReservations:
     path:   /mesReservations
     defaults: { _controller: GSBCovoitBundle:Covoit:mesReservations }
+
+gsb_covoit_nouveauTrajet:
+    path:   /nouveau_trajet
+    defaults: { _controller: GSBCovoitBundle:Covoit:nouveauTrajet }
+
+gsb_covoit_historique:
+    path:   /historique
+    defaults: { _controller: GSBCovoitBundle:Covoit:historique }

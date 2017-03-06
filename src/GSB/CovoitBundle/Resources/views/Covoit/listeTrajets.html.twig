@@ -1,0 +1,44 @@
+{% extends "GSBCovoitBundle::layout.html.twig" %}
+
+{% block title %}
+  {{ title }} - {{ parent() }}
+{% endblock %}
+
+{% block gsbcovoit_body %}
+
+  {% if app.session.flashBag.has('success') %}
+          <div class="alert alert-success">
+              {% for msg in app.session.flashBag.get('success') %}
+                  {{ msg }}
+              {% endfor %}
+          </div>
+  {% endif %}
+
+  <h2>{{ subtitle }}</h2>
+
+  {% for trajet in listTrajets %}
+
+
+    {% if currentUser.getId() == trajet.getAuteurId().getId() %}
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+      </div>
+    {% else %}
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h4>{{ trajet.getIdVille().getLibelle() }} - GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+      </div>
+    {% endif %}
+    <div class="panel-body">
+      <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
+      <p>Le conducteur {{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }} précise :</p>
+      <i><p>{{ trajet.getCommentaire() }}</p></i>
+      <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary">
+          Aperçu <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+    </div>
+  </div>
+  {% endfor %}
+
+{% endblock %}
