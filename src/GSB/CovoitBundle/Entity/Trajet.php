@@ -24,7 +24,7 @@ class Trajet
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="GSB\CovoitBundle\Entity\Salarie")
+     * @ORM\ManyToOne(targetEntity="GSB\CovoitBundle\Entity\Salarie", cascade={"persist"})
      * @ORM\JoinColumn(name="auteur_id", referencedColumnName="id")
      */
     private $auteurId;
@@ -45,7 +45,7 @@ class Trajet
 
     /**
      * @var int
-     * @ORM\ManyToOne(targetEntity="GSB\CovoitBundle\Entity\Ville")
+     * @ORM\ManyToOne(targetEntity="GSB\CovoitBundle\Entity\Ville", cascade={"persist"})
      * @ORM\JoinColumn(name="id_ville", referencedColumnName="id")
      */
     private $idVille;
@@ -60,7 +60,7 @@ class Trajet
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="GSB\CovoitBundle\Entity\TypeVehicule")
+     * @ORM\ManyToOne(targetEntity="GSB\CovoitBundle\Entity\TypeVehicule", cascade={"persist"})
      * @ORM\JoinColumn(name="id_type_vehicule", referencedColumnName="id")
      */
     private $idTypeVehicule;
