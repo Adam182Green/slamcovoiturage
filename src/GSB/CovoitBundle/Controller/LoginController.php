@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -43,7 +42,9 @@ class LoginController extends Controller
                 }
             }
         }
-        return $this->render('GSBCovoitBundle:Covoit:login.html.twig', array(
+        return $this->render('GSBCovoitBundle:Covoit:form.html.twig', array(
+            'title' => "Connexion",
+            'subtitle' => "Connexion",
             'form' => $form->createView(),
         ));
     }
@@ -61,7 +62,7 @@ class LoginController extends Controller
         $form = $this->createFormBuilder($newSalarie)
             ->add('nom', TextType::class)
             ->add('prenom', TextType::class)
-            ->add('telephone', NumberType::class)
+            ->add('telephone', TextType::class)
             ->add('email', EmailType::class)
             ->add('motDePasse', PasswordType::class)
             ->add('inscription', SubmitType::class, array('label' => "Inscription"))
@@ -87,7 +88,9 @@ class LoginController extends Controller
                 }
             }
         }
-        return $this->render('GSBCovoitBundle:Covoit:login.html.twig', array(
+        return $this->render('GSBCovoitBundle:Covoit:form.html.twig', array(
+            'title' => 'Inscription',
+            'subtitle' => 'Inscription',
             'form' => $form->createView(),
         ));
     }
