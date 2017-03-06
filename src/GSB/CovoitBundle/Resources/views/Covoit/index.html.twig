@@ -61,12 +61,28 @@
       {% endif %}
     {% endif %}
     <div class="panel-body">
-      <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
-      <p>Le conducteur {{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }} précise :</p>
-      <i><p>{{ trajet.getCommentaire() }}</p></i>
-      <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary">
-          Réserver <i class="glyphicon glyphicon-chevron-right"></i>
-        </a>
+      <div class="row">
+        <div class="col-md-6">
+          <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
+          <p>Le conducteur <b><a href="{{ path('gsb_covoit_salarie', {'id' : trajet.getAuteurId().getId()}) }}">{{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }}</a></b> précise :</p>
+          <div class="well well-sm">
+            <i><p>" {{ trajet.getCommentaire() }} "</p></i>
+          </div>
+          <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary">
+              Réserver <i class="glyphicon glyphicon-chevron-right"></i>
+          </a>
+        </div>
+        <div class="col-md-4 col-md-offset-1 text-center">
+          <p><b>Autres passagers :</b></p>
+          <ul class="list-group">
+            {% for demande in listDemandes %}
+              {% if demande.getTrajetId() == trajet %}
+                <li class="list-group-item"><a href="{{ path('gsb_covoit_salarie', {'id' : demande.getSalarieId.getId() }) }}">{{ demande.getSalarieId().getPrenom() }} {{ demande.getSalarieId().getNom() }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   {% endfor %}
