@@ -1,5 +1,6 @@
 <?php
 namespace GSB\CovoitBundle\Controller;
+
 use GSB\CovoitBundle\Entity\Login;
 use GSB\CovoitBundle\Entity\Salarie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,10 +17,15 @@ class LoginController extends Controller
 {
     public function loginAction(Request $request)
     {
+        $session = $request->getSession();
+        if($session->get('currentUser') != null)
+        {
+          return $this->redirectToRoute('gsb_covoit_homepage');
+        }
         $em = $this->getDoctrine()->getManager();
         $login = new Login();
         $salaries = $em->getRepository('GSBCovoitBundle:Salarie')->findAll();
-        $session = $request->getSession();
+
         $form = $this->createFormBuilder($login)
             ->add('email', EmailType::class)
             ->add('motDePasse', PasswordType::class)
@@ -32,11 +38,8 @@ class LoginController extends Controller
             {
                 if($salarie->getEmail() == $login->getEmail() && $salarie->getMotDePasse() == $login->getMotDePasse())
                 {
-                    $session->set('currentUser', $salarie);
-                  
-                    $this->addFlash('success','Identification réussie ! Bienvenue '.$salarie->getPrenom().' '.$salarie->getNom());
-                  
-                    return $this->redirectToRoute('gsb_covoit_homepage');
+                  $msg = 'Identification réussie ! Bienvenue '.$salarie->getPrenom().' '.$salarie->getNom();
+                  return $this->setcurrentUser($session, $salarie, $msg);
                 }
             }
         }
@@ -44,8 +47,14 @@ class LoginController extends Controller
             'form' => $form->createView(),
         ));
     }
+
     public function inscriptionAction(Request $request)
     {
+        $session = $request->getSession();
+        if($session->get('currentUser') != null)
+        {
+          return $this->redirectToRoute('gsb_covoit_homepage');
+        }
         $em = $this->getDoctrine()->getManager();
         $newSalarie = new Salarie();
         $salaries = $em->getRepository('GSBCovoitBundle:Salarie')->findAll();
@@ -73,17 +82,27 @@ class LoginController extends Controller
                 {
                     $em->persist($newSalarie);
                     $em->flush();
-                    // 1 - Idem, enregistrer les infos du $newSalarie en session
-                    // 2 - Ajouter message flash :
-                    //$this->addFlash('success','Félicitation, votre inscription est réussie !');
-                    // 3 - L'afficher sur la page vers laquelle on se redirige
+                    return $this->setcurrentUser($session, $newSalarie, 'Félicitations, votre inscription est réussie !');
                     // 4 -[Si on a le temps] Envoyer un mail de confirmation d'inscription
-                    return $this->redirectToRoute('gsb_covoit_homepage');
                 }
             }
         }
         return $this->render('GSBCovoitBundle:Covoit:login.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    public function logoutAction(Request $request)
+    {
+      $session = $request->getSession();
+      $session->set('currentUser', null);
+      return $this->redirectToRoute('gsb_covoit_login');
+    }
+
+    private function setcurrentUser($session, $salarie, $msg)
+    {
+      $session->set('currentUser', $salarie);
+      $this->addFlash('success', $msg);
+      return $this->redirectToRoute('gsb_covoit_homepage');
     }
 }
