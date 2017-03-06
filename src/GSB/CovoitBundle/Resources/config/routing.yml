@@ -23,6 +23,10 @@ gsb_covoit_inscription:
 gsb_covoit_login:
     path:   /login
     defaults: {_controller: GSBCovoitBundle:Login:login}
+    
+gsb_covoit_logout:
+    path:   /logout
+    defaults: {_controller: GSBCovoitBundle:Login:logout}
 
 gsb_covoit_logout:
     path:   /logout

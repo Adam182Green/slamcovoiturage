@@ -39,7 +39,7 @@ class LoginController extends Controller
                 if($salarie->getEmail() == $login->getEmail() && $salarie->getMotDePasse() == $login->getMotDePasse())
                 {
                   $msg = 'Identification réussie ! Bienvenue '.$salarie->getPrenom().' '.$salarie->getNom();
-                  return $this->setcurrentUser($session, $salarie, $msg);
+                  return $this->setCurrentUser($session, $salarie, $msg);
                 }
             }
         }
@@ -82,7 +82,7 @@ class LoginController extends Controller
                 {
                     $em->persist($newSalarie);
                     $em->flush();
-                    return $this->setcurrentUser($session, $newSalarie, 'Félicitations, votre inscription est réussie !');
+                    return $this->setCurrentUser($session, $newSalarie, 'Félicitations, votre inscription est réussie !');
                     // 4 -[Si on a le temps] Envoyer un mail de confirmation d'inscription
                 }
             }
@@ -99,7 +99,7 @@ class LoginController extends Controller
       return $this->redirectToRoute('gsb_covoit_login');
     }
 
-    private function setcurrentUser($session, $salarie, $msg)
+    private function setCurrentUser($session, $salarie, $msg)
     {
       $session->set('currentUser', $salarie);
       $this->addFlash('success', $msg);
