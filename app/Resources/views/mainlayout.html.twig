@@ -41,14 +41,14 @@
           <li><a href="#">Profil</a></li>
           <li><a href="{{ path('gsb_covoit_mesReservations') }}">Mes réservations</a></li>
           <li><a href="{{ path('gsb_covoit_mes_trajets') }}">Mes trajets</a></li>
-          <li><a href="#">Historique</a></li>
-          <li><a href="{{ path('gsb_covoit_homepage') }}">Déconnexion</a></li>
+          <li><a href="{{ path('gsb_covoit_historique') }}">Historique</a></li>
+          <li><a href="{{ path('gsb_covoit_logout') }}">Déconnexion</a></li>
         </ul>
 
         <h3>Annonces</h3>
         <ul class="nav nav-pills nav-stacked">
           <li><a href="#">Rechercher une annonce</a></li>
-          <li><a href="#">Proposer un trajet</a></li>
+          <li><a href="{{ path('gsb_covoit_nouveauTrajet') }}">Proposer un trajet</a></li>
         </ul>
 
         <h3>Dernières annonces</h3>
