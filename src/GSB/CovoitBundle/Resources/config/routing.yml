@@ -43,3 +43,7 @@ gsb_covoit_nouveauTrajet:
 gsb_covoit_historique:
     path:   /historique
     defaults: { _controller: GSBCovoitBundle:Covoit:historique }
+
+gsb_covoit_profile:
+    path: /profile
+    defaults: { _controller: GSBCovoitBundle:Covoit:profile }

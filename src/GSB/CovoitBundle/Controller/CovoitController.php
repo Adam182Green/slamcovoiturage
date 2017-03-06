@@ -1,5 +1,6 @@
 <?php
 namespace GSB\CovoitBundle\Controller;
+
 use GSB\CovoitBundle\Entity\Demande;
 use GSB\CovoitBundle\Entity\Salarie;
 use GSB\CovoitBundle\Entity\Trajet;
@@ -9,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -114,6 +117,8 @@ class CovoitController extends Controller
                                 'subtitle' => $subtitle,
                                 'currentUser' => $currentUser));
     }
+
+
     public function mesReservationsAction(Request $request)
     {
         $session = $request->getSession();
@@ -176,10 +181,12 @@ class CovoitController extends Controller
 
             $em->persist($newTrajet);
             $em->flush();
-            $this->get('session')->getFlashBag('success', 'Félicitations, le trajet a bien été publié.');
+            $this->addFlash('success', 'Félicitations, le trajet a bien été publié.');
             return $this->redirectToRoute('gsb_covoit_homepage');
         }
-        return $this->render('GSBCovoitBundle:Covoit:nouveauTrajet.html.twig', array(
+        return $this->render('GSBCovoitBundle:Covoit:form.html.twig', array(
+            'title' => 'Nouveau trajet',
+            'subtitle' => 'Nouveau trajet',
             'currentUser' => $currentUser,
             'form' => $form->createView(),
         ));
@@ -226,6 +233,51 @@ class CovoitController extends Controller
                                 'title' => 'Historique',
                                 'subtitle' => 'Historique',
                                 'currentUser' => $currentUser
+                              ));
+    }
+
+    public function profileAction(Request $request)
+    {
+      $session = $request->getSession();
+      $currentUser = $session->get('currentUser');
+      if($currentUser == null)
+      {
+        return $this->redirectToRoute('gsb_covoit_login');
+      }
+      $em = $this->getDoctrine()->getManager();
+
+      $form = $this->createFormBuilder($currentUser)
+          ->add('nom', TextType::class)
+          ->add('prenom', TextType::class)
+          ->add('email', EmailType::class) // label
+          ->add('motDePasse', TextType::class)
+          ->add('telephone', TextType::class)
+          ->add('enregistrer', SubmitType::class, array('label' => "Enregistrer modifications"))
+          ->getForm();
+      $form->handleRequest($request);
+      if ($form->isSubmitted() && $form->isValid())
+       {
+          $modifiedUser = $form->getData();
+          $user = $em->getRepository('GSBCovoitBundle:Salarie')->findOneById($currentUser->getId());
+
+          $user->setNom($modifiedUser->getNom());
+          $user->setPrenom($modifiedUser->getPrenom());
+          $user->setEmail($modifiedUser->getEmail());
+          $user->setMotDePasse($modifiedUser->getMotDePasse());
+          $user->setTelephone($modifiedUser->getTelephone());
+
+          $session->set('currentUser', $user);
+
+          $em->flush();
+          $this->addFlash('success', 'Félicitations, votre profil a été mis à jour.');
+          return $this->redirectToRoute('gsb_covoit_profile');
+        }
+
+        return $this->render('GSBCovoitBundle:Covoit:form.html.twig',
+                          array('title' => 'Profil',
+                                'subtitle' => 'Profil',
+                                'currentUser' => $currentUser,
+                                'form' => $form->createView(),
                               ));
     }
 }
