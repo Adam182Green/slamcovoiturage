@@ -33,8 +33,11 @@ class CovoitController extends Controller
       // On récupère l'EntityManager
       $em = $this->getDoctrine()->getManager();
       $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+      $listDemandes  = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
+
       return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
                               array('listTrajets' => $listTrajets,
+                                    'listDemandes' => $listDemandes,
                                     'title' => 'Accueil',
                                     'subtitle' => 'Accueil',
                                     'currentUser' => $currentUser));
@@ -48,12 +51,15 @@ class CovoitController extends Controller
         return $this->redirectToRoute('gsb_covoit_login');
       }
       $em = $this->getDoctrine()->getManager();
+      $listDemandes  = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
       $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($id);
+
       if (null === $trajet) {
         throw new NotFoundHttpException("Le trajet d'id ".$id." n'existe pas.");
       }
       return $this->render('GSBCovoitBundle:Covoit:trajet.html.twig',
                           array('trajet'  => $trajet,
+                                'listDemandes' => $listDemandes,
                                 'currentUser' => $currentUser));
     }
     public function salarieAction(Request $request, $id)
