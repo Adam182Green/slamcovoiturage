@@ -171,7 +171,8 @@ class CovoitController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newTrajet = $form->getData();
-            $newTrajet->setAuteurId($session->get('currentUser'));
+            $user = $em->getRepository('GSBCovoitBundle:Salarie')->findOneById($currentUser->getId());
+            $newTrajet->setAuteurId($user);
 
             $em->persist($newTrajet);
             $em->flush();
@@ -194,20 +195,37 @@ class CovoitController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $demandes = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
+        $listeDemandes = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
+        $listeTrajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
         $trajets = array();
-
-        foreach($demandes as $demande)
+        //Liste des trajets en tan que passager
+        foreach($listeDemandes as $demande)
         {
-          if ($demande->getTrajetId()->getAuteurId()->getId() == $currentUser->getId() || $demande->getSalarieId()->getId() == $currentUser->getId())
+          if($demande->getSalarieId()->getId() == $currentUser->getId())
           {
-            $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneById($demande->getTrajetId());
+            $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($demande->getTrajetId());
             array_push($trajets, $trajet);
           }
+        }
+        //Liste des trajets en tan que conducteur
 
+        foreach($listeTrajets as $trajet)
+        {
+          if($trajet->getAuteurId()->getId() == $currentUser->getId())
+          {
+            if( !in_array($trajet, $trajets))
+            {
+              $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($trajet);
+              array_push($trajets, $trajet);
+            }
+          }
         }
 
         return $this->render('GSBCovoitBundle:Covoit:listeTrajets.html.twig',
-                          array('listTrajets'  => $trajets, 'title' => 'Historique', 'subtitle' => 'Historique', 'currentUser' => $currentUser));
+                          array('listTrajets'  => $trajets,
+                                'title' => 'Historique',
+                                'subtitle' => 'Historique',
+                                'currentUser' => $currentUser
+                              ));
     }
 }
