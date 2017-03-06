@@ -17,9 +17,17 @@
   <h2>{{ subtitle }}</h2>
   <div class="row">
     <div class="col-md-4 text-center">
-      <div class="well lg-well" style="background-color: #b3b3b3">
+      <div class="well well-sm" style="background-color: #d9edf7; border: 1px solid grey">
         <h4 class="bg-info">Aller</h4>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="well well-sm" style="background-color: #fcf8e3; border: 1px solid grey">
         <h4 class="bg-warning">Retour</h4>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="well well-sm" style="background-color: #dff0d8; border: 1px solid grey">
         <h4 class="bg-success">Mes trajets</h4>
       </div>
     </div>
@@ -31,24 +39,24 @@
       {% if trajet.getAllerOuRetour() == TRUE %}
       <div class="panel panel-info">
         <div class="panel-heading">
-          <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+          <h4>GSB <i class="glyphicon glyphicon-arrow-right"></i> {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
         </div>
       {% elseif trajet.getAllerOuRetour() == FALSE %}
       <div class="panel panel-warning">
         <div class="panel-heading">
-          <h4>{{ trajet.getIdVille().getLibelle() }} - GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+          <h4>{{ trajet.getIdVille().getLibelle() }} <i class="glyphicon glyphicon-arrow-right"></i> GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
         </div>
       {% endif %}
     {% else %}
       {% if trajet.getAllerOuRetour() == TRUE %}
       <div class="panel panel-success">
         <div class="panel-heading">
-          <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+          <h4>GSB <i class="glyphicon glyphicon-arrow-right"></i> {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
         </div>
       {% elseif trajet.getAllerOuRetour() == FALSE %}
       <div class="panel panel-success">
         <div class="panel-heading">
-          <h4>{{ trajet.getIdVille().getLibelle() }} - GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+          <h4>{{ trajet.getIdVille().getLibelle() }} <i class="glyphicon glyphicon-arrow-right"></i> GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
         </div>
       {% endif %}
     {% endif %}
