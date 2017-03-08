@@ -242,7 +242,7 @@ class CovoitController extends Controller
                               ));
     }
 
-    public function profileAction(Request $request)
+    public function profilAction(Request $request)
     {
       $session = $request->getSession();
       $currentUser = $session->get('currentUser');
@@ -276,7 +276,7 @@ class CovoitController extends Controller
 
           $em->flush();
           $this->addFlash('success', 'Félicitations, votre profil a été mis à jour.');
-          return $this->redirectToRoute('gsb_covoit_profile');
+          return $this->redirectToRoute('gsb_covoit_profil');
         }
 
         return $this->render('GSBCovoitBundle:Covoit:form.html.twig',
@@ -285,5 +285,33 @@ class CovoitController extends Controller
                                 'currentUser' => $currentUser,
                                 'form' => $form->createView(),
                               ));
+    }
+
+    public function reserverAction(Request $request, $id)
+    {
+        $session = $request->getSession();
+        $currentUser = $session->get('currentUser');
+        if($currentUser == null)
+        {
+          return $this->redirectToRoute('gsb_covoit_login');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $demande = new Demande();
+        $listTrajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+        $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneById($id);
+
+        $demande->setTrajetId($trajet->getId());
+        $demande->setSalarieId($currentUser->getId());
+
+        $em->persist($demande);
+        $em->flush();
+        $this->addFlash('success', 'Félicitations, vous réservé le trajet avec succès.');
+
+        return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
+                          array('listTrajets'  => $listTrajets,
+                                'title' => 'Accueil',
+                                'subtitle' => 'Accueil',
+                                'currentUser' => $currentUser));
     }
 }
