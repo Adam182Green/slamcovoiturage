@@ -56,6 +56,7 @@ class Salarie
      */
     private $telephone;
 
+    private $fullName;
 
     /**
      * Get id
@@ -185,5 +186,15 @@ class Salarie
     public function getTelephone()
     {
         return $this->telephone;
+    }
+
+    /**
+     * Get fullname
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+      return $this->prenom." ".$this->nom;
     }
 }

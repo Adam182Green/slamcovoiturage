@@ -1,0 +1,10 @@
+{% extends "GSBCovoitBundle::layout.html.twig" %}
+
+{% block title %}
+  Lecture d'une annonce - {{ parent() }}
+{% endblock %}
+
+{% block gsbcovoit_body %}
+  <h1>J'Y FERAIS DEMAIN</h1>
+  <h2>Trajet : {{ trajet.getIdVille.getLibelle()}}</h2>
+{% endblock %}

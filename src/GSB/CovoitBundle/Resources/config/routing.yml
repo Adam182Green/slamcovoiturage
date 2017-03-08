@@ -47,3 +47,7 @@ gsb_covoit_historique:
 gsb_covoit_profile:
     path: /profile
     defaults: { _controller: GSBCovoitBundle:Covoit:profile }
+    
+gsb_covoit_rechercheTrajet:
+    path: /recherche_trajet
+    defaults: { _controller: GSBCovoitBundle:Covoit:rechercheTrajet }
