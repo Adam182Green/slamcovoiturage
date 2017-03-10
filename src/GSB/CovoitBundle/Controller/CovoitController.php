@@ -88,11 +88,12 @@ class CovoitController extends Controller
       {
         return $this->redirectToRoute('gsb_covoit_login');
       }
+
       if ($limite == NULL)
         $limite = 3;
       // On récupère l'EntityManager
       $em = $this->getDoctrine()->getManager();
-      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findBy(array(), array('id' => 'desc'));
       return $this->render('GSBCovoitBundle:Covoit:menu.html.twig',
                           array('listTrajets' => $listTrajets,
                                 'limite'      => $limite,
