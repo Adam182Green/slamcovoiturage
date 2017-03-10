@@ -242,7 +242,7 @@ class CovoitController extends Controller
                               ));
     }
 
-    public function profileAction(Request $request)
+    public function profilAction(Request $request)
     {
       $session = $request->getSession();
       $currentUser = $session->get('currentUser');
@@ -257,8 +257,7 @@ class CovoitController extends Controller
           ->add('prenom', TextType::class)
           ->add('email', EmailType::class) // label
           ->add('motDePasse', TextType::class)
-          ->add('telephone', TextType::class,
-                'required' => false)
+          ->add('telephone', TextType::class)
           ->add('enregistrer', SubmitType::class, array('label' => "Enregistrer modifications"))
           ->getForm();
       $form->handleRequest($request);
@@ -277,7 +276,7 @@ class CovoitController extends Controller
 
           $em->flush();
           $this->addFlash('success', 'Félicitations, votre profil a été mis à jour.');
-          return $this->redirectToRoute('gsb_covoit_profile');
+          return $this->redirectToRoute('gsb_covoit_profil');
         }
 
         return $this->render('GSBCovoitBundle:Covoit:form.html.twig',
@@ -288,6 +287,34 @@ class CovoitController extends Controller
                               ));
     }
 
+    public function reserverAction(Request $request, $id)
+    {
+        $session = $request->getSession();
+        $currentUser = $session->get('currentUser');
+        if($currentUser == null)
+        {
+          return $this->redirectToRoute('gsb_covoit_login');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $demande = new Demande();
+        $listTrajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
+        $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneById($id);
+
+        $demande->setTrajetId($trajet->getId());
+        $demande->setSalarieId($currentUser->getId());
+
+        $em->persist($demande);
+        $em->flush();
+        $this->addFlash('success', 'Félicitations, vous réservé le trajet avec succès.');
+
+        return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
+                          array('listTrajets'  => $listTrajets,
+                                'title' => 'Accueil',
+                                'subtitle' => 'Accueil',
+                                'currentUser' => $currentUser));
+    }
+	
 	public function rechercheTrajetAction(Request $request)
     {
       $session = $request->getSession();
@@ -298,49 +325,90 @@ class CovoitController extends Controller
       }
       $em = $this->getDoctrine()->getManager();
 
-      $newTrajet = new Trajet();
+      $criteresDeRecherche = new Trajet();
 
-      $form = $this->createFormBuilder($newTrajet)
+      $form = $this->createFormBuilder($criteresDeRecherche)
           ->add('auteurId', EntityType::class, array(
                 'class' => 'GSBCovoitBundle:Salarie',
                 'choice_label' => 'fullName',
-                'empty_data' => null,
+                'required' => false,
+                'empty_data' => null))
+          ->add('dateTrajet', DateType::class, array(
                 'required' => false))
-          ->add('dateTrajet', DateType::class)
           ->add('heureTrajet', TimeType::class, array(
                                       'placeholder' => array(
-                                                      'hour' => 'Heure', 'minute' => 'Minutes', 'second' => 'Secondes',
-              )))
+                            'hour' => 'Heure', 'minute' => 'Minutes', 'second' => 'Secondes',),
+                'required' => false))
           ->add('idVille', EntityType::class , array(
                 'class' => 'GSBCovoitBundle:Ville',
-                'choice_label' => 'libelle'))
+                'choice_label' => 'libelle',
+                'required' => false,
+                'empty_data' => null))
           ->add('allerOuRetour', ChoiceType::class,
                   array('choices' => array(
                                     'aller' => 'false',
                                     'retour' => 'true'),
                         'choices_as_values' => true,
                         'multiple'=>false,
-                        'expanded'=>true))
+                        'expanded'=>true,
+                        'required' => false))
           ->add('idTypeVehicule', EntityType::class, array(
                 'class' => 'GSBCovoitBundle:TypeVehicule',
-                'choice_label' => 'libelle'))
-          ->add('commentaire', TextType::class)
-          ->add('creation', SubmitType::class, array('label' => "Poster un trajet"))
+                'choice_label' => 'libelle',
+                'required' => false,
+                'empty_data' => null))
+          ->add('commentaire', TextType::class, array(
+                'required' => false))
+          ->add('recherche', SubmitType::class, array('label' => "Rechercher"))
           ->getForm();
       $form->handleRequest($request);
       if ($form->isSubmitted() && $form->isValid()) {
-          $newTrajet = $form->getData();
-          $user = $em->getRepository('GSBCovoitBundle:Salarie')->findOneById($currentUser->getId());
-          $newTrajet->setAuteurId($user);
+          $criteresDeRecherche = $form->getData();
+          
+          $conditions = array();
 
-          $em->persist($newTrajet);
-          $em->flush();
-          $this->addFlash('success', 'Félicitations, le trajet a bien été publié.');
-          return $this->redirectToRoute('gsb_covoit_homepage');
+          if($criteresDeRecherche->getAuteurId() != null)
+          {
+            $conditions['auteurId'] = $criteresDeRecherche->getAuteurId();
+          }
+          if($criteresDeRecherche->getDateTrajet() != null)
+          {
+            $conditions['dateTrajet'] = $criteresDeRecherche->getDateTrajet();
+          }
+          if($criteresDeRecherche->getHeureTrajet() != null)
+          {
+            $conditions['heureTrajet'] = $criteresDeRecherche->getHeureTrajet();
+          }
+          if($criteresDeRecherche->getIdVille() != null)
+          {
+            $conditions['idVille'] = $criteresDeRecherche->getIdVille();
+          }
+          if($criteresDeRecherche->getAllerOuRetour() != null)
+          {
+            $conditions['allerOuRetour'] = $criteresDeRecherche->getAllerOuRetour();
+          }
+          if($criteresDeRecherche->getIdTypeVehicule() != null)
+          {
+            $conditions['idTypeVehicule'] = $criteresDeRecherche->getIdTypeVehicule();
+          }
+          if($criteresDeRecherche->getCommentaire() != null)
+          {
+            $conditions['commentaire'] = $criteresDeRecherche->getCommentaire();
+          }
+
+          $listTrajets = $em->getRepository('GSBCovoitBundle:Trajet')->findBy($conditions);
+
+          return $this->render('GSBCovoitBundle:Covoit:listeTrajets.html.twig', array(
+          'title' => 'Résultats de la recherche',
+          'subtitle' => 'Résultats de la recherche',
+          'currentUser' => $currentUser,
+          'listTrajets' => $listTrajets
+      ));
+
       }
       return $this->render('GSBCovoitBundle:Covoit:form.html.twig', array(
-          'title' => 'Nouveau trajet',
-          'subtitle' => 'Nouveau trajet',
+          'title' => 'Rechercher un trajet',
+          'subtitle' => 'Rechercher un trajet',
           'currentUser' => $currentUser,
           'form' => $form->createView(),
       ));

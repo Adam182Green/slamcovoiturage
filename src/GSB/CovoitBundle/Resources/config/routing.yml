@@ -44,10 +44,17 @@ gsb_covoit_historique:
     path:   /historique
     defaults: { _controller: GSBCovoitBundle:Covoit:historique }
 
-gsb_covoit_profile:
-    path: /profile
-    defaults: { _controller: GSBCovoitBundle:Covoit:profile }
-    
+gsb_covoit_profil:
+    path: /profil
+    defaults: { _controller: GSBCovoitBundle:Covoit:profil }
+
+gsb_covoit_reserver:
+    path: /reserver/{id}
+    defaults:
+      _controller: GSBCovoitBundle:Covoit:reserver
+    requirements:
+      id: \d+
+
 gsb_covoit_rechercheTrajet:
     path: /recherche_trajet
     defaults: { _controller: GSBCovoitBundle:Covoit:rechercheTrajet }

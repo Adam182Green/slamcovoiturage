@@ -188,13 +188,8 @@ class Salarie
         return $this->telephone;
     }
 
-    /**
-     * Get fullname
-     *
-     * @return string
-     */
     public function getFullName()
     {
-      return $this->prenom." ".$this->nom;
+        return $this->prenom." ".$this->nom;
     }
 }
