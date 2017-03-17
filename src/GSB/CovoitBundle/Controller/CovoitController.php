@@ -260,7 +260,7 @@ class CovoitController extends Controller
                               ));
     }
 
-    public function profilAction(Request $request)
+    public function profileAction(Request $request)
     {
       $session = $request->getSession();
       $currentUser = $session->get('currentUser');
@@ -294,7 +294,7 @@ class CovoitController extends Controller
 
           $em->flush();
           $this->addFlash('success', 'Félicitations, votre profil a été mis à jour.');
-          return $this->redirectToRoute('gsb_covoit_profil');
+          return $this->redirectToRoute('gsb_covoit_profile');
         }
 
         return $this->render('GSBCovoitBundle:Covoit:form.html.twig',

@@ -59,8 +59,7 @@
           <p>Le conducteur <b><a href="{{ path('gsb_covoit_salarie', {'id' : trajet.getAuteurId().getId()}) }}">{{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }}</a></b> précise :</p>
           <div class="well well-sm">
             <i><p>" {{ trajet.getCommentaire() }} "</p></i>
-          </div>
-         
+          </div>   
                   <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary"> Voir l'annonce <i class="glyphicon glyphicon-chevron-right"></i>
           </a>
         </div>
@@ -71,7 +70,6 @@
               {% if demande.getTrajetId() == trajet %}
                 <li class="list-group-item"><a href="{{ path('gsb_covoit_salarie', {'id' : demande.getSalarieId.getId() }) }}">{{ demande.getSalarieId().getPrenom() }} {{ demande.getSalarieId().getNom() }}</a></li>
               {% endif %}
-             
             {% endfor %}
           </ul>
         </div>
