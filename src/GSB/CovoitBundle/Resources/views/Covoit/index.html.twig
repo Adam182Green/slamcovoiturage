@@ -34,7 +34,7 @@
   </div>
 
   {% for trajet in listTrajets %}
-
+  {% if trajet.getDateTrajet()|date('j, n, Y') <  today %}
     {% if trajet.getAuteurId().getId() != currentUser.getId() %}
       {% if trajet.getAllerOuRetour() == TRUE %}
       <div class="panel panel-info">
@@ -67,9 +67,8 @@
           <p>Le conducteur <b><a href="{{ path('gsb_covoit_salarie', {'id' : trajet.getAuteurId().getId()}) }}">{{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }}</a></b> précise :</p>
           <div class="well well-sm">
             <i><p>" {{ trajet.getCommentaire() }} "</p></i>
-          </div>
-          <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary">
-              Réserver <i class="glyphicon glyphicon-chevron-right"></i>
+          </div>   
+                  <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary"> Voir l'annonce <i class="glyphicon glyphicon-chevron-right"></i>
           </a>
         </div>
         <div class="col-md-4 col-md-offset-1 text-center">
@@ -85,6 +84,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
   {% endfor %}
 
 {% endblock %}

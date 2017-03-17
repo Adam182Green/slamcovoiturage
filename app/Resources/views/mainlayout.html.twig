@@ -9,62 +9,68 @@
     <title>{% block title %}GSB Covoit{% endblock %}</title>
 
     {% block stylesheets %}
-      {# On charge le CSS de bootstrap depuis le site directement #}
+        {% stylesheets 'bundles/gsbcovoit/css/main.css' filter='cssrewrite' %}
+          <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        {% endstylesheets %}
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-      <link rel="stylesheet" href="../public/css/main.css">
     {% endblock %}
  </head>
 
 
   <body>
-  <div class="container">
-    <div id="header" class="row text-center">
-      <h1 style="font-size: 500%">GSB Covoit'</h1>
-      <p>
-        Site de covoiturage interne à l'entreprise GSB.
-      </p>
-      <br/>
-      <p>
-        <a class="btn btn-primary btn-lg" href="{{ path('gsb_covoit_homepage') }}">
-          Derniers trajets <i class="glyphicon glyphicon-chevron-right"></i>
-        </a>
-      </p>
-    </div>
+   <div class="page">
+        <div class="container">
+            <div id="header" class="row text-center">
+              <h1 style="font-size: 500%">GSB Covoit'</h1>
+              <p>
+                Site de covoiturage interne à l'entreprise GSB.
+              </p>
+              <br/>
+              <p>
+                <a class="btn btn-primary btn-lg" href="{{ path('gsb_covoit_homepage') }}">
+                  Derniers trajets <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+              </p>
+            </div>
 
-    <div class="row">
-      <div id="menu" class="col-md-3">
-      {% block utilisateur %}
-        <h2>{{ currentUser.getPrenom() }} {{ currentUser.getNom() }}</h2>
-      {% endblock %}
+            <div class="row">
+              <div id="menu" class="col-md-3">
+              {% block utilisateur %}
+                <h2>{{ currentUser.getPrenom() }} {{ currentUser.getNom() }}</h2>
+              {% endblock %}
 
-        <ul class="nav nav-pills nav-stacked">
-          <li><a href="{{ path('gsb_covoit_profil') }}">Profil</a></li>
-          <li><a href="{{ path('gsb_covoit_mesReservations') }}">Mes réservations</a></li>
-          <li><a href="{{ path('gsb_covoit_mes_trajets') }}">Mes trajets</a></li>
-          <li><a href="{{ path('gsb_covoit_historique') }}">Historique</a></li>
-          <li><a href="{{ path('gsb_covoit_logout') }}">Déconnexion</a></li>
-        </ul>
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="{{ path('gsb_covoit_profil') }}">Profil</a></li>
+                  <li><a href="{{ path('gsb_covoit_mesReservations') }}">Mes réservations</a></li>
+                  <li><a href="{{ path('gsb_covoit_mes_trajets') }}">Mes trajets</a></li>
+                  <li><a href="{{ path('gsb_covoit_historique') }}">Historique</a></li>
+                  <li><a href="{{ path('gsb_covoit_logout') }}">Déconnexion</a></li>
+                </ul>
 
-        <h3>Annonces</h3>
-        <ul class="nav nav-pills nav-stacked">
-          <li><a href="{{ path('gsb_covoit_rechercheTrajet') }}">Rechercher une annonce</a></li>
-          <li><a href="{{ path('gsb_covoit_nouveauTrajet') }}">Proposer un trajet</a></li>
-        </ul>
+                <h3>Annonces</h3>
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="{{ path('gsb_covoit_rechercheTrajet') }}">Rechercher une annonce</a></li>
+                  <li><a href="{{ path('gsb_covoit_nouveauTrajet') }}">Proposer un trajet</a></li>
+                </ul>
+                
+                <h3>Dernières annonces</h3>
+                {{ render(controller("GSBCovoitBundle:Covoit:menu", {'limite': 3})) }}
 
-        <h3>Dernières annonces</h3>
-        {{ render(controller("GSBCovoitBundle:Covoit:menu", {'limite': 3})) }}
+            </div>
 
-    </div>
-
-    <div id="content" class="col-md-9">
-        {% block body %}
-        {% endblock %}
-    </div>
-    <hr>
+            <div class="col-md-9 corps">
+                {% block body %}
+                {% endblock %}
+            </div>
+            <hr>
+          </div>
+          <footer class="text-center footer">
+               <div class="row">
+                    <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+              </div>
+          </footer>
+       </div>
   </div>
-  <footer class="text-center">
-    <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
-  </footer>
   {% block javascripts %}
     {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
