@@ -42,7 +42,6 @@ class CovoitController extends Controller
                                     'subtitle' => 'Accueil',
                                     'currentUser' => $currentUser));
     }
-    
     public function trajetAction(Request $request, $id)
     {
       $session = $request->getSession();
@@ -88,12 +87,11 @@ class CovoitController extends Controller
       {
         return $this->redirectToRoute('gsb_covoit_login');
       }
-
       if ($limite == NULL)
         $limite = 3;
       // On récupère l'EntityManager
       $em = $this->getDoctrine()->getManager();
-      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findBy(array(), array('id' => 'desc'));
+      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
       return $this->render('GSBCovoitBundle:Covoit:menu.html.twig',
                           array('listTrajets' => $listTrajets,
                                 'limite'      => $limite,
@@ -244,7 +242,7 @@ class CovoitController extends Controller
                               ));
     }
 
-    public function profilAction(Request $request)
+    public function profileAction(Request $request)
     {
       $session = $request->getSession();
       $currentUser = $session->get('currentUser');
@@ -278,7 +276,7 @@ class CovoitController extends Controller
 
           $em->flush();
           $this->addFlash('success', 'Félicitations, votre profil a été mis à jour.');
-          return $this->redirectToRoute('gsb_covoit_profil');
+          return $this->redirectToRoute('gsb_covoit_profile');
         }
 
         return $this->render('GSBCovoitBundle:Covoit:form.html.twig',
@@ -287,53 +285,5 @@ class CovoitController extends Controller
                                 'currentUser' => $currentUser,
                                 'form' => $form->createView(),
                               ));
-    }
-
-    public function reserverAction(Request $request, $id)
-    {
-        $session = $request->getSession();
-        $currentUser = $session->get('currentUser');
-        if($currentUser == null)
-        {
-          return $this->redirectToRoute('gsb_covoit_login');
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $demande = new Demande();
-        $listTrajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
-        $listDemandes = $em->getRepository('GSBCovoitBundle:Demande')->findAll();        
-        $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneBy(array('id' => $id));
-        $user = $em->getRepository('GSBCovoitBundle:Salarie')->findOneBy(array('id' => $currentUser->getId()));
-        $date = new \DateTime('today');
-
-        $demande->setTrajetId($trajet);
-        $demande->setSalarieId($user);
-        $demande->setDateDemande($date);
-        $demande->setValidee(false);
-
-        foreach($listDemandes as $uneDemande)
-        {
-          if( ( $demande->getSalarieId() && $demande->getTrajetId() ) == ( $uneDemande->getSalarieId() && $uneDemande->getTrajetId() ) ) 
-          {
-            $this->addFlash('error', 'Vous avez déjà réservé ce trajet.');
-
-            return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
-                              array('listTrajets'  => $listTrajets,
-                                    'listDemandes' => $listDemandes,
-                                    'title' => 'Accueil',
-                                    'subtitle' => 'Accueil',
-                                    'currentUser' => $currentUser));
-              }
-        }
-        $em->persist($demande);
-        $em->flush();
-        $this->addFlash('success', 'Félicitations, vous avez réservé le trajet avec succès.');
-
-        return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
-                          array('listTrajets'  => $listTrajets,
-                                'listDemandes' => $listDemandes,
-                                'title' => 'Accueil',
-                                'subtitle' => 'Accueil',
-                                'currentUser' => $currentUser));
     }
 }
