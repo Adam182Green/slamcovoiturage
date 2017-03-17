@@ -80,3 +80,93 @@
   {% endfor %}
 
 {% endblock %}
+{% extends "GSBCovoitBundle::layout.html.twig" %}
+
+{% block title %}
+  {{ title }} - {{ parent() }}
+{% endblock %}
+
+{% block gsbcovoit_body %}
+
+  {% if app.session.flashBag.has('success') %}
+          <div class="alert alert-success">
+              {% for msg in app.session.flashBag.get('success') %}
+                  {{ msg }}
+              {% endfor %}
+          </div>
+  {% endif %}
+
+  <h2>{{ subtitle }}</h2>
+  <div class="row">
+    <div class="col-md-4 text-center">
+      <div class="well well-sm" style="background-color: #d9edf7">
+        <h4 class="bg-info">Aller</h4>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="well well-sm" style="background-color: #fcf8e3">
+        <h4 class="bg-warning">Retour</h4>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="well well-sm" style="background-color: #dff0d8">
+        <h4 class="bg-success">Mes trajets</h4>
+      </div>
+    </div>
+  </div>
+
+  {% for trajet in listTrajets %}
+  {% if trajet.getDateTrajet()|date('j, n, Y') <  today %}
+    {% if trajet.getAuteurId().getId() != currentUser.getId() %}
+      {% if trajet.getAllerOuRetour() == TRUE %}
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+        </div>
+      {% elseif trajet.getAllerOuRetour() == FALSE %}
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <h4>{{ trajet.getIdVille().getLibelle() }} - GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+        </div>
+      {% endif %}
+    {% else %}
+      {% if trajet.getAllerOuRetour() == TRUE %}
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+        </div>
+      {% elseif trajet.getAllerOuRetour() == FALSE %}
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h4>{{ trajet.getIdVille().getLibelle() }} - GSB : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+        </div>
+      {% endif %}
+    {% endif %}
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p>Type de véhicule utilisé : {{ trajet.getIdTypeVehicule().getLibelle() }} ayant {{ trajet.getIdTypeVehicule().getNbPlaces() }} places au total.</p>
+          <p>Le conducteur <b><a href="{{ path('gsb_covoit_salarie', {'id' : trajet.getAuteurId().getId()}) }}">{{ trajet.getAuteurId().getPrenom() }} {{ trajet.getAuteurId().getNom() }}</a></b> précise :</p>
+          <div class="well well-sm">
+            <i><p>" {{ trajet.getCommentaire() }} "</p></i>
+          </div>   
+                  <a href="{{ path('gsb_covoit_trajet', {'id' : trajet.getId()}) }}" class="btn btn-primary"> Voir l'annonce <i class="glyphicon glyphicon-chevron-right"></i>
+          </a>
+        </div>
+        <div class="col-md-4 col-md-offset-1 text-center">
+          <p><b>Autres passagers :</b></p>
+          <ul class="list-group">
+            {% for demande in listDemandes %}
+              {% if demande.getTrajetId() == trajet %}
+                <li class="list-group-item"><a href="{{ path('gsb_covoit_salarie', {'id' : demande.getSalarieId.getId() }) }}">{{ demande.getSalarieId().getPrenom() }} {{ demande.getSalarieId().getNom() }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+{% endblock %}

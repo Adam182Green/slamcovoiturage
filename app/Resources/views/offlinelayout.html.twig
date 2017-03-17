@@ -11,7 +11,9 @@
     {% block stylesheets %}
       {# On charge le CSS de bootstrap depuis le site directement #}
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-      <link rel="stylesheet" href="../public/css/main.css">
+          {% stylesheets 'bundles/gsbcovoit/css/main.css' filter='cssrewrite' %}
+              <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />   
+          {% endstylesheets %}
     {% endblock %}
  </head>
 
@@ -48,13 +50,13 @@
         </ul>
     </div>
 
-    <div id="content" class="col-md-9">
+    <div id="content" class="col-md-9 corps">
         {% block body %}
         {% endblock %}
     </div>
     <hr>
   </div>
-  <footer class="text-center">
+  <footer class="text-center footer">
     <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
   </footer>
   {% block javascripts %}

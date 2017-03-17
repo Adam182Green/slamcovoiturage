@@ -1,4 +1,4 @@
-{# src/OC/PlatformBundle/Resources/views/layout.html.twig #}
+{# src/GSB/CovoitBundle/Resources/views/layout.html.twig #}
 {% if currentUser is defined %}
   {% set chemin = "::mainlayout.html.twig" %}
 {% else %}
@@ -17,20 +17,6 @@
   <i><h2 style="color: grey">"Rien de mieux que le Collègueturage !"</h2></i>
 
   <hr>
-  {% if app.session.flashBag.has('success') %}
-          <div class="alert alert-success">
-              {% for msg in app.session.flashBag.get('success') %}
-                  {{ msg }}
-              {% endfor %}
-          </div>
-  {% elseif app.session.flashBag.has('error') %}
-      <div class="alert alert-danger text-center">
-      <i class="glyphicon glyphicon-warning-sign"></i>
-          {% for msg in app.session.flashBag.get('error') %}
-              {{ msg }}
-          {% endfor %}
-      </div>
-  {% endif %}
 
   {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
   {% block gsbcovoit_body %}
