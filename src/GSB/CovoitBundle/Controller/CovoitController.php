@@ -176,22 +176,36 @@ class CovoitController extends Controller
         $newTrajet = new Trajet();
 
         $form = $this->createFormBuilder($newTrajet)
-            ->add('dateTrajet', DateType::class)
-            ->add('heureTrajet', TimeType::class, array(
-                                        'placeholder' => array(
-                                                        'hour' => 'Heure', 'minute' => 'Minutes', 'second' => 'Secondes',
-                )))
+            ->add('dateTrajet', DateType::class, array(
+                                        'format' => 'yyyy-dd-MM  HH:i',
+                                        'label' => "Date du trajet",
+                                        'placeholder' => array('year' => '--', 'month' => '--', 'day' => '--'), // Date entre le jour courant et le dernier jour du mois
+                                        'days' => range(date('d'), date('t')),
+                                        'months' => range(date('m'), 12),
+                                        'years' => range(date('Y'), date('Y', strtotime('+1 years'))) // Soit année actuelle, soit la suivante
+                                        ))
+            ->add('dateTrajet', DateType::class, array(
+                                        'widget' => 'single_text',
+                                        'format' => 'dd-MM-yyyy',
+                                        'html5' => false,
+                                        'attr' => ['class' => 'js-datepicker'],
+                                        ))
+            ->add('heureTrajet', TimeType::class, array('placeholder' => array('hour' => '--', 'minute' => '--'),
+                                                        'label' => "Heure du trajet"))
             ->add('idVille', EntityType::class , array(
+                  'label' => 'Ville',
                   'class' => 'GSBCovoitBundle:Ville',
                   'choice_label' => 'libelle'))
             ->add('allerOuRetour', ChoiceType::class,
-                    array('choices' => array(
+                    array('label' => "Aller ou Retour",
+                          'choices' => array(
                                       'aller' => 'false',
                                       'retour' => 'true'),
                           'choices_as_values' => true,
                           'multiple'=>false,
                           'expanded'=>true))
             ->add('idTypeVehicule', EntityType::class, array(
+                  'label' => "Type du véhicule",
                   'class' => 'GSBCovoitBundle:TypeVehicule',
                   'choice_label' => 'libelle'))
             ->add('commentaire', TextType::class)
