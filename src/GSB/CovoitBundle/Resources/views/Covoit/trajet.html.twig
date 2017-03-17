@@ -61,9 +61,11 @@
             </div>
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
+                  {% if affiche  == 0 %}
               <a href="{{ path('gsb_covoit_reserver', {'id': trajet.getAuteurId().getId() }) }}" class="btn btn-primary btn-block">
                   <h4>Réserver <i class="glyphicon glyphicon-chevron-right"></i></h4>
               </a>
+                  {% endif %}
             </div>
           </div>
         </div>

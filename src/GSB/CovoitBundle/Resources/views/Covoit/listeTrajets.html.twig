@@ -17,12 +17,13 @@
   <h2>{{ subtitle }}</h2>
 
   {% if listTrajets is defined %}
+  
     {% for trajet in listTrajets %}
 
       {% if currentUser.getId() == trajet.getAuteurId().getId() %}
       <div class="panel panel-success">
         <div class="panel-heading">
-          <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('d-m-Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
+          <h4>GSB - {{ trajet.getIdVille().getLibelle() }} : <i>{{ trajet.getDateTrajet()|date('j, n, Y') }} à {{ trajet.getHeureTrajet()|date('H:i:s') }}</i></h4>
         </div>
       {% else %}
       <div class="panel panel-warning">
@@ -40,8 +41,6 @@
       </div>
     </div>
     {% endfor %}
-  {% else %}
-    <h1>VIIIIDE</h1>
   {% endif %}
 
 {% endblock %}

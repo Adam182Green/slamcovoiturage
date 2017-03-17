@@ -20,6 +20,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+
+//              Utiliser la méthode Find by
+
+
 class CovoitController extends Controller
 {
     public function indexAction(Request $request)
@@ -32,6 +36,7 @@ class CovoitController extends Controller
       }
       // On récupère l'EntityManager
       $em = $this->getDoctrine()->getManager();
+      $today = date("j, n, Y"); 
       $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
       $listDemandes  = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
 
@@ -40,28 +45,40 @@ class CovoitController extends Controller
                                     'listDemandes' => $listDemandes,
                                     'title' => 'Accueil',
                                     'subtitle' => 'Accueil',
-                                    'currentUser' => $currentUser));
+                                    'currentUser' => $currentUser,
+                                   'today' => $today));
     }
-    
     public function trajetAction(Request $request, $id)
     {
       $session = $request->getSession();
       $currentUser = $session->get('currentUser');
+      $affiche=0;    
+      $em = $this->getDoctrine()->getManager();
+      $listDemandes  = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
+      $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($id);
       if($currentUser == null)
       {
         return $this->redirectToRoute('gsb_covoit_login');
       }
-      $em = $this->getDoctrine()->getManager();
-      $listDemandes  = $em->getRepository('GSBCovoitBundle:Demande')->findAll();
-      $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->find($id);
-
+      if ($currentUser->getId() == $id)
+      {
+          $affiche=1;
+          return $this->render('GSBCovoitBundle:Covoit:trajet.html.twig',
+                          array('trajet'  => $trajet,
+                                'listDemandes' => $listDemandes,
+                                'currentUser' => $currentUser,
+                               'title' => "Liste des trajets",
+                               'affiche' => $affiche));
+      }
+      
       if (null === $trajet) {
         throw new NotFoundHttpException("Le trajet d'id ".$id." n'existe pas.");
       }
       return $this->render('GSBCovoitBundle:Covoit:trajet.html.twig',
                           array('trajet'  => $trajet,
                                 'listDemandes' => $listDemandes,
-                                'currentUser' => $currentUser));
+                                'currentUser' => $currentUser,
+                               'title' => "Liste des trajets"));
     }
     public function salarieAction(Request $request, $id)
     {
@@ -88,12 +105,11 @@ class CovoitController extends Controller
       {
         return $this->redirectToRoute('gsb_covoit_login');
       }
-
       if ($limite == NULL)
         $limite = 3;
       // On récupère l'EntityManager
       $em = $this->getDoctrine()->getManager();
-      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findBy(array(), array('id' => 'desc'));
+      $listTrajets  = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
       return $this->render('GSBCovoitBundle:Covoit:menu.html.twig',
                           array('listTrajets' => $listTrajets,
                                 'limite'      => $limite,
@@ -301,37 +317,17 @@ class CovoitController extends Controller
         $em = $this->getDoctrine()->getManager();
         $demande = new Demande();
         $listTrajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
-        $listDemandes = $em->getRepository('GSBCovoitBundle:Demande')->findAll();        
-        $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneBy(array('id' => $id));
-        $user = $em->getRepository('GSBCovoitBundle:Salarie')->findOneBy(array('id' => $currentUser->getId()));
-        $date = new \DateTime('today');
+        $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneById($id);
 
-        $demande->setTrajetId($trajet);
-        $demande->setSalarieId($user);
-        $demande->setDateDemande($date);
-        $demande->setValidee(false);
+        $demande->setTrajetId($trajet->getId());
+        $demande->setSalarieId($currentUser->getId());
 
-        foreach($listDemandes as $uneDemande)
-        {
-          if( ( $demande->getSalarieId() && $demande->getTrajetId() ) == ( $uneDemande->getSalarieId() && $uneDemande->getTrajetId() ) ) 
-          {
-            $this->addFlash('error', 'Vous avez déjà réservé ce trajet.');
-
-            return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
-                              array('listTrajets'  => $listTrajets,
-                                    'listDemandes' => $listDemandes,
-                                    'title' => 'Accueil',
-                                    'subtitle' => 'Accueil',
-                                    'currentUser' => $currentUser));
-              }
-        }
         $em->persist($demande);
         $em->flush();
-        $this->addFlash('success', 'Félicitations, vous avez réservé le trajet avec succès.');
+        $this->addFlash('success', 'Félicitations, vous réservé le trajet avec succès.');
 
         return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
                           array('listTrajets'  => $listTrajets,
-                                'listDemandes' => $listDemandes,
                                 'title' => 'Accueil',
                                 'subtitle' => 'Accueil',
                                 'currentUser' => $currentUser));
