@@ -271,12 +271,12 @@ class CovoitController extends Controller
       $em = $this->getDoctrine()->getManager();
 
       $form = $this->createFormBuilder($currentUser)
-          ->add('nom', TextType::class)
-          ->add('prenom', TextType::class)
-          ->add('email', EmailType::class) // label
-          ->add('motDePasse', TextType::class)
-          ->add('telephone', TextType::class)
-          ->add('enregistrer', SubmitType::class, array('label' => "Enregistrer modifications"))
+          ->add('nom', TextType::class, array('label' => "Nom"))
+          ->add('prenom', TextType::class, array('label' => "Prénom"))
+          ->add('email', EmailType::class, array('label' => "Email"))
+          ->add('motDePasse', TextType::class, array('label' => "Mot de passe"))
+          ->add('telephone', TextType::class, array('label' => "Téléphone", 'required' => false))
+          ->add('enregistrer', SubmitType::class, array('label' => "Enregistrer modifications "))
           ->getForm();
       $form->handleRequest($request);
       if ($form->isSubmitted() && $form->isValid())
@@ -368,35 +368,41 @@ class CovoitController extends Controller
 
       $form = $this->createFormBuilder($criteresDeRecherche)
           ->add('auteurId', EntityType::class, array(
+                'label' => 'Conducteur/Conductrice',
                 'class' => 'GSBCovoitBundle:Salarie',
                 'choice_label' => 'fullName',
                 'required' => false,
                 'empty_data' => null))
           ->add('dateTrajet', DateType::class, array(
+                'label' => 'Date',
                 'required' => false))
           ->add('heureTrajet', TimeType::class, array(
+                                      'label' => 'Heure',
                                       'placeholder' => array(
                             'hour' => 'Heure', 'minute' => 'Minutes', 'second' => 'Secondes',),
                 'required' => false))
           ->add('idVille', EntityType::class , array(
+                'label' => 'Ville',
                 'class' => 'GSBCovoitBundle:Ville',
                 'choice_label' => 'libelle',
                 'required' => false,
                 'empty_data' => null))
           ->add('allerOuRetour', ChoiceType::class,
                   array('choices' => array(
-                                    'aller' => 'false',
-                                    'retour' => 'true'),
+                                    'aller' => false,
+                                    'retour' => true),
                         'choices_as_values' => true,
                         'multiple'=>false,
                         'expanded'=>true,
                         'required' => false))
           ->add('idTypeVehicule', EntityType::class, array(
+                'label' => 'Type du véhicule',
                 'class' => 'GSBCovoitBundle:TypeVehicule',
                 'choice_label' => 'libelle',
                 'required' => false,
                 'empty_data' => null))
           ->add('commentaire', TextType::class, array(
+                'label' => 'Commentaire',
                 'required' => false))
           ->add('recherche', SubmitType::class, array('label' => "Rechercher"))
           ->getForm();

@@ -24,6 +24,14 @@
 
 {% block gsbcovoit_body %}
 
+  {% if app.session.flashBag.has('success') %}
+          <div class="alert alert-success">
+              {% for msg in app.session.flashBag.get('success') %}
+                  {{ msg }}
+              {% endfor %}
+          </div>
+  {% endif %}
+
   <h2>{{ subtitle }}</h2>
 
   {{ form_start(form) }}

@@ -26,8 +26,8 @@ class LoginController extends Controller
         $salaries = $em->getRepository('GSBCovoitBundle:Salarie')->findAll();
 
         $form = $this->createFormBuilder($login)
-            ->add('email', EmailType::class)
-            ->add('motDePasse', PasswordType::class)
+            ->add('email', EmailType::class, array('label' => "Email"))
+            ->add('motDePasse', PasswordType::class, array('label' => "Mot de passe"))
             ->add('connexion', SubmitType::class, array('label' => "Connexion"))
             ->getForm();
         $form->handleRequest($request);
@@ -60,11 +60,11 @@ class LoginController extends Controller
         $newSalarie = new Salarie();
         $salaries = $em->getRepository('GSBCovoitBundle:Salarie')->findAll();
         $form = $this->createFormBuilder($newSalarie)
-            ->add('nom', TextType::class)
-            ->add('prenom', TextType::class)
-            ->add('telephone', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('motDePasse', PasswordType::class)
+            ->add('nom', TextType::class, array('label' => "Nom"))
+            ->add('prenom', TextType::class, array('label' => "Prénom"))
+            ->add('telephone', TextType::class, array('label' => "Téléphone"))
+            ->add('email', EmailType::class, array('label' => "Email"))
+            ->add('motDePasse', PasswordType::class, array('label' => "Mot de passe"))
             ->add('inscription', SubmitType::class, array('label' => "Inscription"))
             ->getForm();
         $form->handleRequest($request);
