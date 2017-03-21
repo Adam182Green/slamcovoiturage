@@ -172,16 +172,7 @@ class CovoitController extends Controller
 
         $form = $this->createFormBuilder($newTrajet)
             ->add('dateTrajet', DateType::class, array(
-                                        'format' => 'yyyy-dd-MM  HH:i',
-                                        'label' => "Date du trajet",
-                                        'placeholder' => array('year' => '--', 'month' => '--', 'day' => '--'), // Date entre le jour courant et le dernier jour du mois
-                                        'days' => range(date('d'), date('t')),
-                                        'months' => range(date('m'), 12),
-                                        'years' => range(date('Y'), date('Y', strtotime('+1 years'))) // Soit année actuelle, soit la suivante
-                                        ))
-            ->add('dateTrajet', DateType::class, array(
                                         'widget' => 'single_text',
-                                        'format' => 'dd-MM-yyyy',
                                         'html5' => false,
                                         'attr' => ['class' => 'js-datepicker'],
                                         ))
