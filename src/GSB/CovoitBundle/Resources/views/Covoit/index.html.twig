@@ -1,3 +1,4 @@
+
 {% extends "GSBCovoitBundle::layout.html.twig" %}
 
 {% block title %}
@@ -34,7 +35,7 @@
   </div>
 
   {% for trajet in listTrajets %}
-  {% if trajet.getDateTrajet()|date('j, n, Y') <  today %}
+  {% if trajet.getDateTrajet()|date('Y, m, d') <  today %}
     {% if trajet.getAuteurId().getId() != currentUser.getId() %}
       {% if trajet.getAllerOuRetour() == TRUE %}
       <div class="panel panel-info">

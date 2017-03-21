@@ -63,12 +63,6 @@ class CovoitController extends Controller
       if ($currentUser->getId() == $id)
       {
           $affiche=1;
-          return $this->render('GSBCovoitBundle:Covoit:trajet.html.twig',
-                          array('trajet'  => $trajet,
-                                'listDemandes' => $listDemandes,
-                                'currentUser' => $currentUser,
-                               'title' => "Liste des trajets",
-                               'affiche' => $affiche));
       }
       
       if (null === $trajet) {
@@ -78,7 +72,8 @@ class CovoitController extends Controller
                           array('trajet'  => $trajet,
                                 'listDemandes' => $listDemandes,
                                 'currentUser' => $currentUser,
-                               'title' => "Liste des trajets"));
+                               'title' => "Liste des trajets",
+                               'affiche' => $affiche));
     }
     public function salarieAction(Request $request, $id)
     {
@@ -176,22 +171,36 @@ class CovoitController extends Controller
         $newTrajet = new Trajet();
 
         $form = $this->createFormBuilder($newTrajet)
-            ->add('dateTrajet', DateType::class)
-            ->add('heureTrajet', TimeType::class, array(
-                                        'placeholder' => array(
-                                                        'hour' => 'Heure', 'minute' => 'Minutes', 'second' => 'Secondes',
-                )))
+            ->add('dateTrajet', DateType::class, array(
+                                        'format' => 'yyyy-dd-MM  HH:i',
+                                        'label' => "Date du trajet",
+                                        'placeholder' => array('year' => '--', 'month' => '--', 'day' => '--'), // Date entre le jour courant et le dernier jour du mois
+                                        'days' => range(date('d'), date('t')),
+                                        'months' => range(date('m'), 12),
+                                        'years' => range(date('Y'), date('Y', strtotime('+1 years'))) // Soit année actuelle, soit la suivante
+                                        ))
+            ->add('dateTrajet', DateType::class, array(
+                                        'widget' => 'single_text',
+                                        'format' => 'dd-MM-yyyy',
+                                        'html5' => false,
+                                        'attr' => ['class' => 'js-datepicker'],
+                                        ))
+            ->add('heureTrajet', TimeType::class, array('placeholder' => array('hour' => '--', 'minute' => '--'),
+                                                        'label' => "Heure du trajet"))
             ->add('idVille', EntityType::class , array(
+                  'label' => 'Ville',
                   'class' => 'GSBCovoitBundle:Ville',
                   'choice_label' => 'libelle'))
             ->add('allerOuRetour', ChoiceType::class,
-                    array('choices' => array(
+                    array('label' => "Aller ou Retour",
+                          'choices' => array(
                                       'aller' => 'false',
                                       'retour' => 'true'),
                           'choices_as_values' => true,
                           'multiple'=>false,
                           'expanded'=>true))
             ->add('idTypeVehicule', EntityType::class, array(
+                  'label' => "Type du véhicule",
                   'class' => 'GSBCovoitBundle:TypeVehicule',
                   'choice_label' => 'libelle'))
             ->add('commentaire', TextType::class)
@@ -317,17 +326,38 @@ class CovoitController extends Controller
         $em = $this->getDoctrine()->getManager();
         $demande = new Demande();
         $listTrajets = $em->getRepository('GSBCovoitBundle:Trajet')->findAll();
-        $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneById($id);
+        $listDemandes = $em->getRepository('GSBCovoitBundle:Demande')->findAll();        
+        $trajet = $em->getRepository('GSBCovoitBundle:Trajet')->findOneBy(array('id' => $id));
+        $user = $em->getRepository('GSBCovoitBundle:Salarie')->findOneBy(array('id' => $currentUser->getId()));
+        $date = new \DateTime('today');
 
-        $demande->setTrajetId($trajet->getId());
-        $demande->setSalarieId($currentUser->getId());
+        $demande->setTrajetId($trajet);
+        $demande->setSalarieId($user);
+        $demande->setDateDemande($date);
+        $demande->setValidee(false);
 
+        foreach($listDemandes as $uneDemande)
+        {
+          if( ( $demande->getSalarieId() && $demande->getTrajetId() ) == ( $uneDemande->getSalarieId() && $uneDemande->getTrajetId() ) ) 
+          {
+            $this->addFlash('error', 'Vous avez déjà réservé ce trajet.');
+
+            return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
+                              array('listTrajets'  => $listTrajets,
+                                    'listDemandes' => $listDemandes,
+                                    'title' => 'Accueil',
+                                    'subtitle' => 'Accueil',
+                                    'currentUser' => $currentUser,
+                                   'today'=> $date));
+              }
+        }
         $em->persist($demande);
         $em->flush();
-        $this->addFlash('success', 'Félicitations, vous réservé le trajet avec succès.');
+        $this->addFlash('success', 'Félicitations, vous avez réservé le trajet avec succès.');
 
         return $this->render('GSBCovoitBundle:Covoit:index.html.twig',
                           array('listTrajets'  => $listTrajets,
+                                'listDemandes' => $listDemandes,
                                 'title' => 'Accueil',
                                 'subtitle' => 'Accueil',
                                 'currentUser' => $currentUser));
