@@ -284,7 +284,7 @@ class CovoitController extends Controller
           ->add('prenom', TextType::class, array('label' => "Prénom"))
           ->add('email', EmailType::class, array('label' => "Email"))
           ->add('motDePasse', TextType::class, array('label' => "Mot de passe"))
-          ->add('telephone', TextType::class, array('label' => "Téléphone"))
+          ->add('telephone', TextType::class, array('label' => "Téléphone", 'required' => false))
           ->add('enregistrer', SubmitType::class, array('label' => "Enregistrer modifications "))
           ->getForm();
       $form->handleRequest($request);
@@ -398,8 +398,8 @@ class CovoitController extends Controller
                 'empty_data' => null))
           ->add('allerOuRetour', ChoiceType::class,
                   array('choices' => array(
-                                    'aller' => 'false',
-                                    'retour' => 'true'),
+                                    'aller' => false,
+                                    'retour' => true),
                         'choices_as_values' => true,
                         'multiple'=>false,
                         'expanded'=>true,
