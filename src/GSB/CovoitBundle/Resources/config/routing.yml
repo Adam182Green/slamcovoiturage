@@ -54,3 +54,7 @@ gsb_covoit_reserver:
       _controller: GSBCovoitBundle:Covoit:reserver
     requirements:
       id: \d+
+
+gsb_covoit_rechercheTrajet:
+    path: /recherche_trajet
+    defaults: { _controller: GSBCovoitBundle:Covoit:rechercheTrajet }
