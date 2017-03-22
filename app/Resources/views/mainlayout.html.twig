@@ -1,82 +1,46 @@
+{# app/Resources/views/mainlayout.html.twig #}
+
 <!DOCTYPE html>
-<html lang="fr">
-<head>
+<html>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}" />
-    <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="favicon.ico" /><![endif]-->
-
 
     <title>{% block title %}GSB Covoit{% endblock %}</title>
 
     {% block stylesheets %}
         {% stylesheets 'bundles/gsbcovoit/css/main.css' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
           <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-          <style>
-            /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-            .row.content {height: 100%}
-            
-            .container {
-               overflow: hidden;   
-              }
-            
-            /* Set gray background color and 100% height */
-            .sidenav {
-              background-color: #f1f1f1;
-              height: 100%;
-                margin-bottom: -5000px;
-                padding-bottom: 5000px;
-            }
-            
-            /* Set black background color, white text and some padding */
-            footer {
-              background-color: none;
-              color: white;
-              padding: 15px;
-            }
-            
-            /* On small screens, set height to 'auto' for sidenav and grid */
-            @media screen and (max-width: 767px) {
-              .sidenav {
-                height: auto;
-                padding: 15px;
-              }
-              .row.content {height: auto;} 
-            }
-          </style>
         {% endstylesheets %}
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     {% endblock %}
-    
-</head>
+ </head>
 
 
   <body>
-    <div class="container">
-            <div class="row content">      
-                <!--Header-->
-                <div id="header" class="col-md-12 text-center">
-                  <h1 style="font-size: 500%">GSB Covoit'</h1>
-                  <p>
-                    Site de covoiturage interne à l'entreprise GSB.
-                  </p>
-                  <br/>
-                  <p>
-                    <a class="btn btn-primary btn-lg" href="{{ path('gsb_covoit_homepage') }}">
-                      Derniers trajets <i class="glyphicon glyphicon-chevron-right"></i>
-                    </a>
-                  </p>
-                </div>
-                <br/>
-                <!--Fin header-->
-                
-              <div class="col-md-3 sidenav">
+   <div class="page">
+        <div class="container">
+            <div id="header" class="row text-center">
+              <h1 style="font-size: 500%">GSB Covoit'</h1>
+              <p>
+                Site de covoiturage interne à l'entreprise GSB.
+              </p>
+              <br/>
+              <p>
+                <a class="btn btn-primary btn-lg" href="{{ path('gsb_covoit_homepage') }}">
+                  Derniers trajets <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+              </p>
+            </div>
+
+            <div class="row">
+              <div id="menu" class="col-md-3">
               {% block utilisateur %}
                 <h2>{{ currentUser.getPrenom() }} {{ currentUser.getNom() }}</h2>
               {% endblock %}
 
                 <ul class="nav nav-pills nav-stacked">
-                  <li class="active"><a href="{{ path('gsb_covoit_profil') }}">Profil</a></li>
+                  <li><a href="{{ path('gsb_covoit_profil') }}">Profil</a></li>
                   <li><a href="{{ path('gsb_covoit_mesReservations') }}">Mes réservations</a></li>
                   <li><a href="{{ path('gsb_covoit_mes_trajets') }}">Mes trajets</a></li>
                   <li><a href="{{ path('gsb_covoit_historique') }}">Historique</a></li>
@@ -88,7 +52,7 @@
                   <li><a href="{{ path('gsb_covoit_rechercheTrajet') }}">Rechercher une annonce</a></li>
                   <li><a href="{{ path('gsb_covoit_nouveauTrajet') }}">Proposer un trajet</a></li>
                 </ul>
-
+                
                 <h3>Dernières annonces</h3>
                 {{ render(controller("GSBCovoitBundle:Covoit:menu", {'limite': 3})) }}
 
@@ -99,10 +63,14 @@
                 {% endblock %}
             </div>
             <hr>
-      <footer class="text-center">
-        <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
-      </footer>
-    </div>
+          </div>
+          <footer class="text-center footer">
+               <div class="row">
+                    <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+              </div>
+          </footer>
+       </div>
+  </div>
   {% block javascripts %}
     {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
