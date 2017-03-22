@@ -6,6 +6,7 @@ body {
 
 #header {
   background-color: #cccccc;
+  content: url("../images/header.jpg");
 }
 
 #menu {
