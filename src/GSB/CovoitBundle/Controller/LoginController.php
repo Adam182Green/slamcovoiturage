@@ -33,7 +33,6 @@ class LoginController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $login = $form->getData();
-            $login->setMotDePasse(sha1($login->getMotDePasse()));
             foreach($salaries as $salarie)
             {
                 if($salarie->getEmail() == $login->getEmail() && $salarie->getMotDePasse() == $login->getMotDePasse())
@@ -71,7 +70,6 @@ class LoginController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newSalarie = $form->getData();
-            $newSalarie->setMotDePasse(sha1($newSalarie->getMotDePasse()));
             $unique = true;
             $nbSalaries = count($salaries);
             $index = 0;
