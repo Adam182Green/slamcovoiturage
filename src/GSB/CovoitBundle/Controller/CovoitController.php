@@ -274,7 +274,7 @@ class CovoitController extends Controller
           ->add('nom', TextType::class, array('label' => "Nom"))
           ->add('prenom', TextType::class, array('label' => "Prénom"))
           ->add('email', EmailType::class, array('label' => "Email"))
-          ->add('motDePasse', TextType::class, array('label' => "Mot de passe"))
+          ->add('motDePasse', PasswordType::class, array('label' => "Mot de passe"), 'hidden')
           ->add('telephone', TextType::class, array('label' => "Téléphone", 'required' => false))
           ->add('enregistrer', SubmitType::class, array('label' => "Enregistrer modifications "))
           ->getForm();
@@ -287,7 +287,7 @@ class CovoitController extends Controller
           $user->setNom($modifiedUser->getNom());
           $user->setPrenom($modifiedUser->getPrenom());
           $user->setEmail($modifiedUser->getEmail());
-          $user->setMotDePasse($modifiedUser->getMotDePasse());
+          $user->setMotDePasse(sha1($modifiedUser->getMotDePasse()));
           $user->setTelephone($modifiedUser->getTelephone());
 
           $session->set('currentUser', $user);
