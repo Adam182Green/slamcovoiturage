@@ -1,0 +1,27 @@
+body {
+  background-image: url("../images/background.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#header {
+  background-color: #cccccc;
+}
+
+#menu {
+  background-color: #a6a6a6;
+  padding-bottom: 10px;
+  min-height: 100%;
+}
+#menu li {
+  background-color: #F5F5F5;
+  border-radius: 4px;
+}
+#menu a, h2, h3 {
+  color: black;
+  text-align: center;
+}
+
+#content {
+  background-color: #F5F5F5;
+}
